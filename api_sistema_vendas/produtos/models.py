@@ -107,3 +107,15 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+
+    @property
+    def is_disponivel(self):
+        """
+        Retorna a diponibilidade do produto.
+        True    - estoque > 0
+        False   - estoque <= 0 
+        """
+        if(self.estoque > 0):
+            return True
+        else:
+            return False
