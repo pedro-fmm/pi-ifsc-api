@@ -18,6 +18,23 @@ class Plataforma(models.Model):
         return self.nome
 
        
+class FaixaEtaria(models.Model):
+    """
+    Modelo das faixas etárias com seus respectivos campos
+    """
+    id                      = models.UUIDField(primary_key=True)
+    faixa                   = models.CharField(max_length=256)
+    descricao               = models.CharField(max_length=512)
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "faixa etária"
+        verbose_name_plural = "faixas etárias"
+
+    def __str__(self):
+        return self.faixa
+
+ 
 class Produto(models.Model):
     """
     Modelo dos produtos com seus respectivos campos.
