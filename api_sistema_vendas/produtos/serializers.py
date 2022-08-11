@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto
+from .models import Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto
 
 class PlataformaSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from models import Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco
-from serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer
+from .models import Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco
+from .serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer
 
 # Views - Produto
 
