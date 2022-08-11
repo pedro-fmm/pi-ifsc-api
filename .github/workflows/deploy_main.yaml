@@ -22,6 +22,5 @@ jobs:
         REPOSITORY: pi
         IMAGE_TAG: prod-${{ github.run_number }}
       run: |
-        docker build -t pi_api . --tag $IMAGE_TAG
+        docker build -t pi . --tag $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-        echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
