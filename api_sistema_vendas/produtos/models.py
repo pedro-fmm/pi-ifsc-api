@@ -51,6 +51,23 @@ class Genero(models.Model):
     def __str__(self):
         return self.nome
 
+
+class Categoria(models.Model):
+    """
+    Modelo das faixas etárias com seus respectivos campos
+    """
+    id                      = models.UUIDField(primary_key=True)
+    nome                    = models.CharField(max_length=256)
+    descricao               = models.CharField(max_length=512)
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "categoria"
+        verbose_name_plural = "categorias"
+
+    def __str__(self):
+        return self.nome
+
  
 class Produto(models.Model):
     """
