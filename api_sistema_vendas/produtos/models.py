@@ -1,11 +1,12 @@
 from django.db import models
+import uuid
 import datetime
 
 class Plataforma(models.Model):
     """
     Modelo das plataformas com seus respectivos campos
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
 
@@ -22,7 +23,7 @@ class FaixaEtaria(models.Model):
     """
     Modelo das faixas etárias com seus respectivos campos
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     faixa                   = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
 
@@ -39,7 +40,7 @@ class Genero(models.Model):
     """
     Modelo das faixas etárias com seus respectivos campos
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
 
@@ -56,7 +57,7 @@ class Categoria(models.Model):
     """
     Modelo das faixas etárias com seus respectivos campos
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
 
@@ -73,7 +74,7 @@ class Preco(models.Model):
     """
     Modelo das faixas etárias com seus respectivos campos
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     data_alteracao          = models.DateTimeField(auto_now_add=True)
     preco_custo             = models.DecimalField(max_digits=8, decimal_places=2)
     preco_venda             = models.DecimalField(max_digits=8, decimal_places=2)
@@ -94,7 +95,7 @@ class Produto(models.Model):
 
     Tags tornam a pesquisa mais fácil.
     """
-    id                      = models.UUIDField(primary_key=True)
+    id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.TextField()
     imagem                  = models.FileField(upload_to='media')
