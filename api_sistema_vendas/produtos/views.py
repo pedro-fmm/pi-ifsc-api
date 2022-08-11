@@ -7,7 +7,7 @@ from .serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSeria
 # Views - Produto
 
 @api_view(['GET'])
-def produto_list():
+def produto_list(request):
     """
     Lista os produtos
     """
@@ -19,7 +19,7 @@ def produto_list():
 # Views - Categoria
 
 @api_view(['GET'])
-def categoria_list():
+def categoria_list(request):
     """
     Lista as categorias
     """
@@ -31,7 +31,7 @@ def categoria_list():
 # Views - Faixa Etária
 
 @api_view(['GET'])
-def faixa_list():
+def faixa_list(request):
     """
     Lista as faixas etárias
     """
@@ -43,7 +43,7 @@ def faixa_list():
 # Views - Gênero
 
 @api_view(['GET'])
-def genero_list():
+def genero_list(request):
     """
     Lista os gêneros
     """
@@ -55,7 +55,7 @@ def genero_list():
 # Views - Plataforma
 
 @api_view(['GET'])
-def plataforma_list():
+def plataforma_list(request):
     """
     Lista as plataformas
     """
@@ -67,7 +67,7 @@ def plataforma_list():
 # Views - Preço
 
 @api_view(['GET'])
-def preco_list():
+def preco_list(request):
     """
     Lista os preços
     """
