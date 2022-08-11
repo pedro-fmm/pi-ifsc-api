@@ -98,7 +98,7 @@ class Produto(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.TextField()
-    imagem                  = models.FileField(upload_to='media')
+    imagem                  = models.FileField(upload_to='media', blank=True)
     plataforma              = models.ForeignKey('Plataforma', on_delete=models.CASCADE, related_name='produtos')
     faixa_etaria            = models.ForeignKey('FaixaEtaria', on_delete=models.CASCADE, related_name='produtos')
     genero                  = models.ForeignKey('Genero', on_delete=models.CASCADE, related_name='produtos')
