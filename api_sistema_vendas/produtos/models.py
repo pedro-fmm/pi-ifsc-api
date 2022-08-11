@@ -1,6 +1,23 @@
 from django.db import models
 
 
+class Plataforma(models.Model):
+    """
+    Modelo das plataformas com seus respectivos campos
+    """
+    id                      = models.UUIDField(primary_key=True)
+    nome                    = models.CharField(max_length=256)
+    descricao               = models.CharField(max_length=512)
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "plataformas"
+        verbose_name_plural = "plataformas"
+
+    def __str__(self):
+        return self.nome
+
+       
 class Produto(models.Model):
     """
     Modelo dos produtos com seus respectivos campos.
