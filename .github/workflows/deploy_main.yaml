@@ -21,6 +21,9 @@ jobs:
         REGISTRY: ifscpi
         REPOSITORY: pi
         IMAGE_TAG: prod-${{ github.run_number }}
+        DOCKER_HUB_REPO: ${{ secrets.DOCKER_HUB_REPO }}
+        DOCKER_HUB_PASS: ${{ secrets.DOCKER_HUB_PASS }}
       run: |
+        docker login 
         docker build -t pi . --tag $REGISTRY/$REPOSITORY:$IMAGE_TAG
         docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
