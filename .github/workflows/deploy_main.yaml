@@ -1,0 +1,34 @@
+name: Docker Push to Dockerhub
+
+on:
+
+  push:
+    branches: [branch-docker]
+
+  pull_request:
+    branches: [branch-docker]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    # - name: docker login 
+    #   env:
+    #     DOCKER_USER: ${{secrets.DOCKER_USER}}
+    #     DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+    # run: |
+    #   docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+    
+    - name: Tag and push image
+    env:
+      REGISTRY: ifscpi
+      REPOSITORY: pi
+      IMAGE_TAG: prod-${{ github.run_number }}
+    run: |
+      docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+      docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+      echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
