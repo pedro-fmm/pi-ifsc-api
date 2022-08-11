@@ -13,7 +13,7 @@ def produto_list(request):
     """
     produtos = Produto.objects.all()
     serializer = ProdutoSerializer(produtos, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Categoria
@@ -25,7 +25,7 @@ def categoria_list(request):
     """
     categorias = Categoria.objects.all()
     serializer = CategoriaSerializer(categorias, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Faixa Etária
@@ -37,7 +37,7 @@ def faixa_list(request):
     """
     faixas = FaixaEtaria.objects.all()
     serializer = FaixaEtariaSerializer(faixas, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Gênero
@@ -49,7 +49,7 @@ def genero_list(request):
     """
     generos = Genero.objects.all()
     serializer = GeneroSerializer(generos, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Plataforma
@@ -61,7 +61,7 @@ def plataforma_list(request):
     """
     plataformas = Plataforma.objects.all()
     serializer = PlataformaSerializer(plataformas, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Preço
@@ -73,4 +73,4 @@ def preco_list(request):
     """
     precos = Preco.objects.all()
     serializer = PrecoSerializer(precos, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_200_OK)
