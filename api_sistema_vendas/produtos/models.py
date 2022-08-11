@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 
 class Plataforma(models.Model):
     """
@@ -67,6 +67,25 @@ class Categoria(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class Preco(models.Model):
+    """
+    Modelo das faixas etárias com seus respectivos campos
+    """
+    id                      = models.UUIDField(primary_key=True)
+    data_alteracao          = models.DateTimeField(auto_now_add=True)
+    preco_custo             = models.DecimalField(max_digits=8, decimal_places=2)
+    preco_venda             = models.DecimalField(max_digits=8, decimal_places=2)
+    descricao               = models.CharField(max_length=512)
+
+    class Meta:
+        ordering            = ["data_alteracao"]
+        verbose_name        = "preço"
+        verbose_name_plural = "preços"
+
+    def __str__(self):
+        return self.preco_venda
 
  
 class Produto(models.Model):
