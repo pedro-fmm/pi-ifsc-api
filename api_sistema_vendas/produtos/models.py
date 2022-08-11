@@ -27,12 +27,29 @@ class FaixaEtaria(models.Model):
     descricao               = models.CharField(max_length=512)
 
     class Meta:
-        ordering            = ["nome"]
+        ordering            = ["faixa"]
         verbose_name        = "faixa etária"
         verbose_name_plural = "faixas etárias"
 
     def __str__(self):
         return self.faixa
+
+
+class Genero(models.Model):
+    """
+    Modelo das faixas etárias com seus respectivos campos
+    """
+    id                      = models.UUIDField(primary_key=True)
+    nome                    = models.CharField(max_length=256)
+    descricao               = models.CharField(max_length=512)
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "gênero"
+        verbose_name_plural = "gêneros"
+
+    def __str__(self):
+        return self.nome
 
  
 class Produto(models.Model):
