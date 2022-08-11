@@ -17,12 +17,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Tag and push image
-        id: tag-image
-        env:
-          REGISTRY: ifscpi
-          REPOSITORY: pi
-          IMAGE_TAG: prod-${{ github.run_number }}
-        run: |
-          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
+      env:
+        REGISTRY: ifscpi
+        REPOSITORY: pi
+        IMAGE_TAG: prod-${{ github.run_number }}
+      run: |
+        docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+        docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
