@@ -105,6 +105,11 @@ class Produto(models.Model):
     data_criacao            = models.DateField(auto_now_add=True)
     estoque                 = models.IntegerField(default=0) 
 
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "produto"
+        verbose_name_plural = "produtos"
+
     def __str__(self):
         return self.nome
 
