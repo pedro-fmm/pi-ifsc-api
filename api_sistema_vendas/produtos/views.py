@@ -15,6 +15,7 @@ def produto_list(request):
     serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def produto_create(request):
     """
@@ -25,6 +26,33 @@ def produto_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def produto_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta um produto.
+    """
+    try:
+        produto = Produto.objects.get(pk=pk)
+    except Produto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ProdutoSerializer(produto)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = ProdutoSerializer(produto, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        produto.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Views - Categoria
 
@@ -37,6 +65,7 @@ def categoria_list(request):
     serializer = CategoriaSerializer(categorias, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def categoria_create(request):
     """
@@ -48,27 +77,82 @@ def categoria_create(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def categoria_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta uma categoria.
+    """
+    try:
+        categoria = Categoria.objects.get(pk=pk)
+    except Categoria.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CategoriaSerializer(categoria)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CategoriaSerializer(categoria, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        categoria.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # Views - Faixa Etária
 
 @api_view(['GET'])
 def faixa_list(request):
     """
-    Lista as faixas etárias
+    Lista as faixas etárias.
     """
     faixas = FaixaEtaria.objects.all()
     serializer = FaixaEtariaSerializer(faixas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def faixa_create(request):
     """
-    Cria uma faixa etária
+    Cria uma faixa etária.
     """
     serializer = FaixaEtariaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def faixa_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta uma faixa etária.
+    """
+    try:
+        faixa = FaixaEtaria.objects.get(pk=pk)
+    except FaixaEtaria.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = FaixaEtariaSerializer(faixa)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = FaixaEtariaSerializer(faixa, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        faixa.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Views - Gênero
 
@@ -81,6 +165,7 @@ def genero_list(request):
     serializer = GeneroSerializer(generos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def genero_create(request):
     """
@@ -91,6 +176,33 @@ def genero_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def genero_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta um gênero.
+    """
+    try:
+        genero = Genero.objects.get(pk=pk)
+    except Genero.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = GeneroSerializer(genero)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = GeneroSerializer(genero, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        genero.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Views - Plataforma
 
@@ -103,6 +215,7 @@ def plataforma_list(request):
     serializer = PlataformaSerializer(plataformas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 @api_view(['POST'])
 def plataforma_create(request):
     """
@@ -113,6 +226,33 @@ def plataforma_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def plataforma_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta uma plataforma.
+    """
+    try:
+        plataforma = Plataforma.objects.get(pk=pk)
+    except Plataforma.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = PlataformaSerializer(plataforma)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = PlataformaSerializer(plataforma, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        plataforma.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Views - Preço
 
@@ -135,3 +275,29 @@ def preco_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def preco_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta um preço.
+    """
+    try:
+        preco = Preco.objects.get(pk=pk)
+    except Preco.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = PrecoSerializer(preco)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = PrecoSerializer(preco, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        preco.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
