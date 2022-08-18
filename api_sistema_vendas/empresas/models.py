@@ -1,5 +1,3 @@
-from mailbox import NotEmptyError
-from weakref import proxy
 from django.db import models
 from uuid import uuid4
 
