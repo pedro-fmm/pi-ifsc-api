@@ -5,19 +5,19 @@ from .views import preco_detail, faixa_detail, genero_detail, produto_detail, ca
 
 urlpatterns = [
     # List
-    path('list/categoria/', categoria_list),
-    path('list/preco/', preco_list),
-    path('list/faixa/', faixa_list),
-    path('list/genero/', genero_list),
-    path('list/produto/', produto_list),
-    path('list/plataforma/', plataforma_list),
+    path('categoria/list/', categoria_list),
+    path('preco/list/', preco_list),
+    path('faixa/list/', faixa_list),
+    path('genero/list/', genero_list),
+    path('produto/list/', produto_list),
+    path('plataforma/list/', plataforma_list),
     # Create
-    path('create/categoria/', categoria_create),
-    path('create/preco/', preco_create),
-    path('create/faixa/', faixa_create),
-    path('create/genero/', genero_create),
-    path('create/produto/', produto_create),
-    path('create/plataforma/', plataforma_create),
+    path('categoria/create/', categoria_create),
+    path('preco/create/', preco_create),
+    path('faixa/create/', faixa_create),
+    path('genero/create/', genero_create),
+    path('produto/create/', produto_create),
+    path('plataforma/create/', plataforma_create),
     # Detail
     path('categoria/<uuid:pk>', categoria_detail),
     path('preco/<uuid:pk>', preco_detail),
