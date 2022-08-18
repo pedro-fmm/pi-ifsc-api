@@ -43,7 +43,7 @@ class Fornecedor(models.Model):
 
 class Cargo(models.Model):
     """
-    Modelagem dos cargos
+    Modelo dos cargos
     """
     CHOICES                 = [True, False]
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
