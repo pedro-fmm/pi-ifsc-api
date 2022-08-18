@@ -19,6 +19,6 @@ from .views import health
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('produtos.urls')),
+    path('api/', include('produtos.urls')),
     path('health/', health)
 ]
