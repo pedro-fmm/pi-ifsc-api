@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Empresa, Fornecedor
-from .serializers import EmpresaSerializer, FornecedorSerializer
+from .models import Empresa, Fornecedor, Cargo
+from .serializers import EmpresaSerializer, FornecedorSerializer, CargoSerializer
 
 # Views - Empresa
 
@@ -11,8 +11,8 @@ def empresa_list(request):
     """
     Lista as empresas.
     """
-    produtos = Empresa.objects.all()
-    serializer = EmpresaSerializer(produtos, many=True)
+    empresas = Empresa.objects.all()
+    serializer = EmpresaSerializer(empresas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -61,8 +61,8 @@ def fornecedor_list(request):
     """
     Lista os fornecedores.
     """
-    categorias = Fornecedor.objects.all()
-    serializer = FornecedorSerializer(categorias, many=True)
+    fornecedores = Fornecedor.objects.all()
+    serializer = FornecedorSerializer(fornecedores, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -101,5 +101,55 @@ def fornecedor_detail(request, pk):
 
     elif request.method == 'DELETE':
         fornecedor.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# Views - Cargo
+
+@api_view(['GET'])
+def cargo_list(request):
+    """
+    Lista os cargos.
+    """
+    cargo = Cargo.objects.all()
+    serializer = CargoSerializer(cargo, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def cargo_create(request):
+    """
+    Cria um cargo.
+    """
+    serializer = CargoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def cargo_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta um cargo.
+    """
+    try:
+        cargo = Cargo.objects.get(pk=pk)
+    except Cargo.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CargoSerializer(cargo)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = CargoSerializer(cargo, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        cargo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
