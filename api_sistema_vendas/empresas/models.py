@@ -2,7 +2,6 @@ from pyexpat import model
 from django.db import models
 from uuid import uuid4
 
-
 class Empresa(models.Model):
     """
     Modelo das empresas com seus respectivos campos.
@@ -63,3 +62,4 @@ class Cargo(models.Model):
 
     def __str__(self):
         return self.nome
+
