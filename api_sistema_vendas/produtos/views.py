@@ -15,6 +15,16 @@ def produto_list(request):
     serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def produto_create(request):
+    """
+    Cria um produto
+    """
+    serializer = ProdutoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Views - Categoria
 
@@ -27,6 +37,16 @@ def categoria_list(request):
     serializer = CategoriaSerializer(categorias, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def categoria_create(request):
+    """
+    Cria uma categoria
+    """
+    serializer = CategoriaSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Views - Faixa Etária
 
@@ -39,6 +59,16 @@ def faixa_list(request):
     serializer = FaixaEtariaSerializer(faixas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def faixa_create(request):
+    """
+    Cria uma faixa etária
+    """
+    serializer = FaixaEtariaSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Views - Gênero
 
@@ -51,6 +81,16 @@ def genero_list(request):
     serializer = GeneroSerializer(generos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def genero_create(request):
+    """
+    Cria um gênero
+    """
+    serializer = GeneroSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Views - Plataforma
 
@@ -63,6 +103,16 @@ def plataforma_list(request):
     serializer = PlataformaSerializer(plataformas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['POST'])
+def plataforma_create(request):
+    """
+    Cria um plataforma
+    """
+    serializer = PlataformaSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # Views - Preço
 
@@ -74,3 +124,14 @@ def preco_list(request):
     precos = Preco.objects.all()
     serializer = PrecoSerializer(precos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def preco_create(request):
+    """
+    Cria um preço
+    """
+    serializer = PrecoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
