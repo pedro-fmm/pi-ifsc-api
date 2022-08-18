@@ -1,16 +1,19 @@
 from django.urls import path
-from .views import empresa_list, fornecedor_list
-from .views import empresa_create, fornecedor_create
-from .views import empresa_detail, fornecedor_detail
+from .views import empresa_list, fornecedor_list, cargo_list
+from .views import empresa_create, fornecedor_create, cargo_create
+from .views import empresa_detail, fornecedor_detail, cargo_detail
 
 urlpatterns = [
     # List
     path('empresa/list/', empresa_list),
     path('fornecedor/list/', fornecedor_list),
+    path('cargo/list/', cargo_list),
     # Create
     path('empresa/create/', empresa_create),
     path('fornecedor/create/', fornecedor_create),
+    path('cargo/create/', cargo_create),
     # Detail
     path('empresa/<uuid:pk>', empresa_detail),
     path('fornecedor/<uuid:pk>', fornecedor_detail),
+    path('cargo/<uuid:pk>', cargo_detail),
 ]
