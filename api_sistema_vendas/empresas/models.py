@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from uuid import uuid4
 
@@ -40,3 +41,25 @@ class Fornecedor(models.Model):
         return self.nome_fantasia
 
 
+class Cargo(models.Model):
+    """
+    Modelo dos cargos
+    """
+    CHOICES                 = [True, False]
+    id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    nome                    = models.CharField(max_length=256)
+    is_admin                = models.BooleanField(choices=CHOICES, default=False)
+    manage_produtos         = models.BooleanField(choices=CHOICES, default=False)
+    manage_clientes         = models.BooleanField(choices=CHOICES, default=False)
+    manage_fornecedores     = models.BooleanField(choices=CHOICES, default=False)
+    manage_product          = models.BooleanField(choices=CHOICES, default=False)
+    manage_cargos           = models.BooleanField(choices=CHOICES, default=False)
+    manage_funcionarios     = models.BooleanField(choices=CHOICES, default=False)
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "cargo"
+        verbose_name_plural = "cargos"
+
+    def __str__(self):
+        return self.nome
