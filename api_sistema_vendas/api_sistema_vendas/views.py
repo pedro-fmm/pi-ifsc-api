@@ -7,4 +7,5 @@ def health(request):
     """
     Healthcheck
     """
-    return Response(status=status.HTTP_200_OK)
+    response = {"status": "olha só quem ta na pista"}
+    return Response(response, status=status.HTTP_200_OK)
