@@ -23,5 +23,22 @@ class Empresa(models.Model):
         return self.nome_fantasia
 
 
+class Fornecedor(models.Model):
+    """
+    Modelo dos fornecedores
+    """
+    id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    razao_social            = models.CharField(max_length=256) 
+    nome_fantasia           = models.CharField(max_length=256)
+    cnpj                    = models.CharField(max_length=14)
+    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas')
+
+    class Meta:
+        ordering            = ["nome_fantasia"]
+        verbose_name        = "fornecedores"
+        verbose_name_plural = "fornecedor"
+
+    def __str__(self):
+        return self.nome_fantasia
 
 
