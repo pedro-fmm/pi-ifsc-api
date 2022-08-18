@@ -9,7 +9,7 @@ from .serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSeria
 @api_view(['GET'])
 def produto_list(request):
     """
-    Lista os produtos
+    Lista os produtos.
     """
     produtos = Produto.objects.all()
     serializer = ProdutoSerializer(produtos, many=True)
@@ -19,7 +19,7 @@ def produto_list(request):
 @api_view(['POST'])
 def produto_create(request):
     """
-    Cria um produto
+    Cria um produto.
     """
     serializer = ProdutoSerializer(data=request.data)
     if serializer.is_valid():
@@ -59,7 +59,7 @@ def produto_detail(request, pk):
 @api_view(['GET'])
 def categoria_list(request):
     """
-    Lista as categorias
+    Lista as categorias.
     """
     categorias = Categoria.objects.all()
     serializer = CategoriaSerializer(categorias, many=True)
@@ -69,7 +69,7 @@ def categoria_list(request):
 @api_view(['POST'])
 def categoria_create(request):
     """
-    Cria uma categoria
+    Cria uma categoria.
     """
     serializer = CategoriaSerializer(data=request.data)
     if serializer.is_valid():
@@ -159,7 +159,7 @@ def faixa_detail(request, pk):
 @api_view(['GET'])
 def genero_list(request):
     """
-    Lista os gêneros
+    Lista os gêneros.
     """
     generos = Genero.objects.all()
     serializer = GeneroSerializer(generos, many=True)
@@ -169,7 +169,7 @@ def genero_list(request):
 @api_view(['POST'])
 def genero_create(request):
     """
-    Cria um gênero
+    Cria um gênero.
     """
     serializer = GeneroSerializer(data=request.data)
     if serializer.is_valid():
@@ -209,7 +209,7 @@ def genero_detail(request, pk):
 @api_view(['GET'])
 def plataforma_list(request):
     """
-    Lista as plataformas
+    Lista as plataformas.
     """
     plataformas = Plataforma.objects.all()
     serializer = PlataformaSerializer(plataformas, many=True)
@@ -219,7 +219,7 @@ def plataforma_list(request):
 @api_view(['POST'])
 def plataforma_create(request):
     """
-    Cria um plataforma
+    Cria um plataforma.
     """
     serializer = PlataformaSerializer(data=request.data)
     if serializer.is_valid():
@@ -259,7 +259,7 @@ def plataforma_detail(request, pk):
 @api_view(['GET'])
 def preco_list(request):
     """
-    Lista os preços
+    Lista os preços.
     """
     precos = Preco.objects.all()
     serializer = PrecoSerializer(precos, many=True)
@@ -268,7 +268,7 @@ def preco_list(request):
 @api_view(['POST'])
 def preco_create(request):
     """
-    Cria um preço
+    Cria um preço.
     """
     serializer = PrecoSerializer(data=request.data)
     if serializer.is_valid():
