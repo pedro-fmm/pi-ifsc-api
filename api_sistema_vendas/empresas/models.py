@@ -29,7 +29,7 @@ class Fornecedor(models.Model):
     razao_social            = models.CharField(max_length=256) 
     nome_fantasia           = models.CharField(max_length=256)
     cnpj                    = models.CharField(max_length=14)
-    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas')
+    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas_fornecedor', null=True)
 
     class Meta:
         ordering            = ["nome_fantasia"]
@@ -51,6 +51,7 @@ class Cargo(models.Model):
     
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
+    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas_cargo', null=True)
     is_admin                = models.BooleanField(choices=CHOICES, default=False)
     manage_produtos         = models.BooleanField(choices=CHOICES, default=False)
     manage_clientes         = models.BooleanField(choices=CHOICES, default=False)
@@ -63,6 +64,28 @@ class Cargo(models.Model):
         ordering            = ["nome"]
         verbose_name        = "cargo"
         verbose_name_plural = "cargos"
+
+    def __str__(self):
+        return self.nome
+
+
+class Cliente(models.Model):
+    """
+    Modelo dos clientes
+    """
+    id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    nome                    = models.CharField(max_length=256)
+    cpf                     = models.CharField(max_length=11)
+    rg                      = models.CharField(max_length=7, blank=True)
+    email                   = models.CharField(max_length=256)
+    telefone                = models.CharField(max_length=11)
+    endereco                = models.CharField(max_length=256)
+    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas_cliente')
+
+    class Meta:
+        ordering            = ["nome"]
+        verbose_name        = "cliente"
+        verbose_name_plural = "clientes"
 
     def __str__(self):
         return self.nome
