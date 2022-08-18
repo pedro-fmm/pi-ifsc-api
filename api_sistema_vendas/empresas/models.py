@@ -45,7 +45,11 @@ class Cargo(models.Model):
     """
     Modelo dos cargos
     """
-    CHOICES                 = [True, False]
+    CHOICES = [
+        ("Pode", True), 
+        ("Não pode", False)
+    ]
+    
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     is_admin                = models.BooleanField(choices=CHOICES, default=False)
