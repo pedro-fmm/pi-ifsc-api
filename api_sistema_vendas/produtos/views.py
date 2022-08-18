@@ -1,5 +1,6 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from .models import Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco
 from .serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer
@@ -7,6 +8,7 @@ from .serializers import CategoriaSerializer, FaixaEtariaSerializer, GeneroSeria
 # Views - Produto
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def produto_list(request):
     """
     Lista os produtos.
@@ -17,6 +19,7 @@ def produto_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def produto_create(request):
     """
     Cria um produto.
@@ -29,6 +32,7 @@ def produto_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def produto_detail(request, pk):
     """
     Retorna, atualiza ou deleta um produto.
@@ -57,6 +61,7 @@ def produto_detail(request, pk):
 # Views - Categoria
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def categoria_list(request):
     """
     Lista as categorias.
@@ -67,6 +72,7 @@ def categoria_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def categoria_create(request):
     """
     Cria uma categoria.
@@ -79,6 +85,7 @@ def categoria_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def categoria_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma categoria.
@@ -107,6 +114,7 @@ def categoria_detail(request, pk):
 # Views - Faixa Etária
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def faixa_list(request):
     """
     Lista as faixas etárias.
@@ -117,6 +125,7 @@ def faixa_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def faixa_create(request):
     """
     Cria uma faixa etária.
@@ -129,6 +138,7 @@ def faixa_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def faixa_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma faixa etária.
@@ -157,6 +167,7 @@ def faixa_detail(request, pk):
 # Views - Gênero
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def genero_list(request):
     """
     Lista os gêneros.
@@ -167,6 +178,7 @@ def genero_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def genero_create(request):
     """
     Cria um gênero.
@@ -179,6 +191,7 @@ def genero_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def genero_detail(request, pk):
     """
     Retorna, atualiza ou deleta um gênero.
@@ -207,6 +220,7 @@ def genero_detail(request, pk):
 # Views - Plataforma
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def plataforma_list(request):
     """
     Lista as plataformas.
@@ -217,6 +231,7 @@ def plataforma_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def plataforma_create(request):
     """
     Cria um plataforma.
@@ -229,6 +244,7 @@ def plataforma_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def plataforma_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma plataforma.
@@ -257,6 +273,7 @@ def plataforma_detail(request, pk):
 # Views - Preço
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def preco_list(request):
     """
     Lista os preços.
@@ -266,6 +283,7 @@ def preco_list(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def preco_create(request):
     """
     Cria um preço.
@@ -277,6 +295,7 @@ def preco_create(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def preco_detail(request, pk):
     """
     Retorna, atualiza ou deleta um preço.

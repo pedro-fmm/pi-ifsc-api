@@ -1,12 +1,14 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from .models import Empresa, Fornecedor, Cargo
 from .serializers import EmpresaSerializer, FornecedorSerializer, CargoSerializer
 
 # Views - Empresa
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def empresa_list(request):
     """
     Lista as empresas.
@@ -17,6 +19,7 @@ def empresa_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def empresa_create(request):
     """
     Cria uma empresa.
@@ -29,6 +32,7 @@ def empresa_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def empresa_detail(request, pk):
     """
     Retorna, atualiza ou deleta um empresa.
@@ -57,6 +61,7 @@ def empresa_detail(request, pk):
 # Views - Fornecedor
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def fornecedor_list(request):
     """
     Lista os fornecedores.
@@ -67,6 +72,7 @@ def fornecedor_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def fornecedor_create(request):
     """
     Cria um fornecedor.
@@ -79,6 +85,7 @@ def fornecedor_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def fornecedor_detail(request, pk):
     """
     Retorna, atualiza ou deleta um fornecedor.
@@ -107,6 +114,7 @@ def fornecedor_detail(request, pk):
 # Views - Cargo
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def cargo_list(request):
     """
     Lista os cargos.
@@ -117,6 +125,7 @@ def cargo_list(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def cargo_create(request):
     """
     Cria um cargo.
@@ -129,6 +138,7 @@ def cargo_create(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
 def cargo_detail(request, pk):
     """
     Retorna, atualiza ou deleta um cargo.
