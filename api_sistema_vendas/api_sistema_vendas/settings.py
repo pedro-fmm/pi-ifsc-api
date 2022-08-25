@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,11 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'allauth',
+    'accounts',
     'produtos',
     'empresas',
     'storages'
 ]
 
+# Authentication
+
+AUTH_USER_MODEL = 'accounts.Funcionario'
+LOGIN_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 if not DEBUG:
     REST_FRAMEWORK = {

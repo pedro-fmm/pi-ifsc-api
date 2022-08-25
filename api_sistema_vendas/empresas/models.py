@@ -1,6 +1,6 @@
-from pyexpat import model
-from django.db import models
 from uuid import uuid4
+from django.db import models
+
 
 class Empresa(models.Model):
     """
