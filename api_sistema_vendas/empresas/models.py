@@ -10,7 +10,7 @@ class Empresa(models.Model):
     razao_social            = models.CharField(max_length=256) 
     nome_fantasia           = models.CharField(max_length=256)
     cnpj                    = models.CharField(max_length=14)
-    icone                   = models.FileField(upload_to='media', blank=True)
+    icone                   = models.FileField(upload_to='media/icones-empresa/', blank=True)
 
     class Meta:
         ordering            = ["nome_fantasia"]
@@ -29,6 +29,7 @@ class Fornecedor(models.Model):
     razao_social            = models.CharField(max_length=256) 
     nome_fantasia           = models.CharField(max_length=256)
     cnpj                    = models.CharField(max_length=14)
+    icone                   = models.FileField(upload_to='media/icones-empresa/', blank=True)
     empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas_fornecedor', null=True)
 
     class Meta:

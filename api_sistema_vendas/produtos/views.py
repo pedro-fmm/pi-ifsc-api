@@ -61,7 +61,7 @@ def produto_detail(request, pk):
 # Views - Categoria
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def categoria_list(request):
     """
     Lista as categorias.
