@@ -320,3 +320,11 @@ def preco_detail(request, pk):
         preco.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['GET'])
+def search(request):
+    search_value = request.GET.get('search')
+    produtos = Produto.objects.filter(nome__iregex=rf'((?i)\b{search_value}\b)', descricao__iregex=rf'((?i)\b{search_value}\b)')
+    serializer = ProdutoSerializer(produtos, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

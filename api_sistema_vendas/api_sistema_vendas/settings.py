@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'allauth',
     'accounts',
     'produtos',
     'empresas',
-    'storages'
+    'storages',
+    'allauth'
 ]
 
 # Authentication

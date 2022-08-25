@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, re_path
 from .views import preco_list, faixa_list, genero_list, produto_list, categoria_list, plataforma_list
 from .views import preco_create, faixa_create, genero_create, produto_create, categoria_create, plataforma_create
 from .views import preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail
+from .views import search
 
 urlpatterns = [
     # List
@@ -25,4 +26,6 @@ urlpatterns = [
     path('genero/<uuid:pk>', genero_detail),
     path('produto/<uuid:pk>', produto_detail),
     path('plataforma/<uuid:pk>', plataforma_detail),
+    # Pesquisa
+    re_path(r'^pesquisa/$', search)
 ]
