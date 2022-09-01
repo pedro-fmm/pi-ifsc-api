@@ -44,4 +44,3 @@ def validate_cpf(cpf: str):
         return True
 
     return False
-

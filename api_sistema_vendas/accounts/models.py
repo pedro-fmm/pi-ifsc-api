@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from empresas.models import Empresa
 
 class FuncionarioManager(BaseUserManager):
     """
@@ -61,6 +62,7 @@ class Funcionario(PermissionsMixin, AbstractBaseUser):
     is_staff                = models.BooleanField('isAdmin', default=False)
     is_active               = models.BooleanField('active', default=True)
     date_joined             = models.DateTimeField('data de entrada', default=timezone.now, editable=False)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios')
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome']

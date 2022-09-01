@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-import datetime
+from empresas.models import Empresa
 
 class Plataforma(models.Model):
     """
@@ -9,6 +9,7 @@ class Plataforma(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='plataformas')
 
     class Meta:
         ordering            = ["nome"]
@@ -26,6 +27,7 @@ class FaixaEtaria(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     faixa                   = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='faixas')
 
     class Meta:
         ordering            = ["faixa"]
@@ -43,6 +45,7 @@ class Genero(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='generos')
 
     class Meta:
         ordering            = ["nome"]
@@ -60,6 +63,7 @@ class Categoria(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
     descricao               = models.CharField(max_length=512)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='categorias')
 
     class Meta:
         ordering            = ["nome"]
@@ -79,6 +83,7 @@ class Preco(models.Model):
     preco_custo             = models.DecimalField(max_digits=8, decimal_places=2)
     preco_venda             = models.DecimalField(max_digits=8, decimal_places=2)
     descricao               = models.CharField(max_length=512)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='precos')
 
     class Meta:
         ordering            = ["data_alteracao"]
@@ -104,7 +109,8 @@ class Produto(models.Model):
     genero                  = models.ForeignKey('Genero', on_delete=models.CASCADE, related_name='produtos')
     categoria               = models.ForeignKey('Categoria', on_delete=models.CASCADE, related_name='produtos')
     data_criacao            = models.DateField(auto_now_add=True)
-    estoque                 = models.IntegerField(default=0) 
+    estoque                 = models.IntegerField(default=0)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='produtos')
 
     class Meta:
         ordering            = ["nome"]
