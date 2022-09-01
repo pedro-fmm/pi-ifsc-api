@@ -118,9 +118,9 @@ WSGI_APPLICATION = 'api_sistema_vendas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-#DATABASES = MYSQL_CONN #connecting to cloud mysql
+DATABASES = MYSQL_CONN #connecting to cloud mysql
 
-DATABASES = SQLITE_CONN #connecting to local sqlite
+#DATABASES = SQLITE_CONN #connecting to local sqlite
 
 
 # Password validation
