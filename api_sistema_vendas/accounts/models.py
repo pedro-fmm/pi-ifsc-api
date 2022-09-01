@@ -54,7 +54,6 @@ class Funcionario(PermissionsMixin, AbstractBaseUser):
     """
     Modelo de usuário personalizado com seus devidos campos
     """
-    id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     username                = models.CharField('usuario', max_length=15, unique=True)
     primeiro_nome           = models.CharField('primeiro nome', max_length=30)
     ultimo_nome             = models.CharField('ultimo nome', max_length=30)
