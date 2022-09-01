@@ -10,9 +10,8 @@ class FuncionarioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Funcionario
-        fields = ['id', 'username', 'primeiro_nome', 'ultimo_nome', 'email', 'is_admin', 'is_staff', 'date_joined']
+        fields = '__all__'
         read_only_field = ['is_active', 'date_joined']
-
 
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -38,7 +37,7 @@ class RegisterSerializer(FuncionarioSerializer):
 
     class Meta:
         model = Funcionario
-        fields = ['id', 'username', 'primeiro_nome', 'ultimo_nome', 'email', 'is_admin', 'is_staff', 'date_joined']
+        fields = '__all__'
 
     def create(self, validated_data):
         try:
@@ -46,3 +45,4 @@ class RegisterSerializer(FuncionarioSerializer):
         except ObjectDoesNotExist:
             funcionario = Funcionario.objects.create_user(**validated_data)
         return funcionario
+

@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from .models import Venda, VendaItem
 from .serializers import VendaSerializer, VendaItemSerializer
 
-
 # Views - Venda
 
 @api_view(['GET'])

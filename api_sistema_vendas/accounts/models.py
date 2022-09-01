@@ -66,7 +66,7 @@ class Funcionario(PermissionsMixin, AbstractBaseUser):
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios')
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome']
+    REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome', 'empresa']
     
     objects = FuncionarioManager()
     
