@@ -30,7 +30,7 @@ class Venda(models.Model):
         return self.numero
 
 
-class VendaItens(models.Model):
+class VendaItem(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     produto                 = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='vendaitens')
     venda                   = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='vendaitens')
