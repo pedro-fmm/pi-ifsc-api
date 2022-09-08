@@ -1,7 +1,6 @@
 from uuid import uuid4
 from django.db import models
 
-
 class Empresa(models.Model):
     """
     Modelo das empresas com seus respectivos campos.
@@ -52,7 +51,7 @@ class Cargo(models.Model):
     
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
-    empresa                 = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='empresas_cargo', null=True)
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresas')
     is_admin                = models.BooleanField(choices=CHOICES, default=False)
     manage_produtos         = models.BooleanField(choices=CHOICES, default=False)
     manage_clientes         = models.BooleanField(choices=CHOICES, default=False)

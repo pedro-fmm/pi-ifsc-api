@@ -1,4 +1,4 @@
-from .models import Funcionario
+from .models import Administrador, Funcionario, Usuario
 from rest_framework import serializers
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -6,12 +6,26 @@ from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
 from django.core.exceptions import ObjectDoesNotExist
 
-class FuncionarioSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Usuario
+        fields = ('id', 'username', 'primeiro_nome', 'ultimo_nome', 'email', 'is_admin', 'is_staff', 'is_active', 'date_joined')
+        read_only_field = ['is_active', 'date_joined']
+
+
+class FuncionarioSerializer(UsuarioSerializer):
 
     class Meta:
         model = Funcionario
-        fields = '__all__'
-        read_only_field = ['is_active', 'date_joined']
+        fields = UsuarioSerializer.Meta.fields + ('usuario', 'empresa', 'cargo',)
+
+
+class AdministradorSerializer(UsuarioSerializer):
+
+    class Meta:
+        model = Administrador
+        fields = UsuarioSerializer.Meta.fields + ('usuario',)
 
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -21,7 +35,7 @@ class LoginSerializer(TokenObtainPairSerializer):
 
         refresh = self.get_token(self.user)
 
-        data['user'] = FuncionarioSerializer(self.user).data
+        data['user'] = UsuarioSerializer(self.user).data
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
 
@@ -31,18 +45,18 @@ class LoginSerializer(TokenObtainPairSerializer):
         return data
 
 
-class RegisterSerializer(FuncionarioSerializer):
+class RegisterSerializer(UsuarioSerializer):
     password = serializers.CharField(max_length=128, min_length=8, write_only=True, required=True)
     email = serializers.EmailField(required=True, write_only=True, max_length=128)
 
     class Meta:
-        model = Funcionario
+        model = Usuario
         fields = '__all__'
 
     def create(self, validated_data):
         try:
-            funcionario = Funcionario.objects.get(email=validated_data['email'])
+            usuario = Usuario.objects.get(email=validated_data['email'])
         except ObjectDoesNotExist:
-            funcionario = Funcionario.objects.create_user(**validated_data)
-        return funcionario
+            usuario = Usuario.objects.create_user(**validated_data)
+        return usuario
 

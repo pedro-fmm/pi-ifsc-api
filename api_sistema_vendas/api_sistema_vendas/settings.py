@@ -50,12 +50,13 @@ INSTALLED_APPS = [
     'produtos',
     'empresas',
     'storages',
+    'vendas',
     'allauth'
 ]
 
 # Authentication
 
-AUTH_USER_MODEL = 'accounts.Funcionario'
+AUTH_USER_MODEL = 'accounts.Usuario'
 LOGIN_URL = '/'
 
 AUTHENTICATION_BACKENDS = [

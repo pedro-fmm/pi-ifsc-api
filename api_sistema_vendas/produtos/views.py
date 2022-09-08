@@ -13,7 +13,7 @@ def produto_list(request):
     """
     Lista os produtos.
     """
-    produtos = Produto.objects.all()
+    produtos = Produto.objects.filter(empresa__id=request.user.empresa.id)
     serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -66,7 +66,7 @@ def categoria_list(request):
     """
     Lista as categorias.
     """
-    categorias = Categoria.objects.all()
+    categorias = Categoria.objects.filter(empresa__id=request.user.empresa.id)
     serializer = CategoriaSerializer(categorias, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -119,7 +119,7 @@ def faixa_list(request):
     """
     Lista as faixas etárias.
     """
-    faixas = FaixaEtaria.objects.all()
+    faixas = FaixaEtaria.objects.filter(empresa__id=request.user.empresa.id)
     serializer = FaixaEtariaSerializer(faixas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -172,7 +172,7 @@ def genero_list(request):
     """
     Lista os gêneros.
     """
-    generos = Genero.objects.all()
+    generos = Genero.objects.filter(empresa__id=request.user.empresa.id)
     serializer = GeneroSerializer(generos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -225,7 +225,7 @@ def plataforma_list(request):
     """
     Lista as plataformas.
     """
-    plataformas = Plataforma.objects.all()
+    plataformas = Plataforma.objects.filter(empresa__id=request.user.empresa.id)
     serializer = PlataformaSerializer(plataformas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -278,7 +278,7 @@ def preco_list(request):
     """
     Lista os preços.
     """
-    precos = Preco.objects.all()
+    precos = Preco.objects.filter(empresa__id=request.user.empresa.id)
     serializer = PrecoSerializer(precos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 

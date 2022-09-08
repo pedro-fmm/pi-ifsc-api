@@ -1,10 +1,9 @@
 from django.utils import timezone
 from django.db import models
-from uuid import uuid4
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from empresas.models import Empresa
+from empresas.models import Empresa, Cargo
 
-class FuncionarioManager(BaseUserManager):
+class UsuarioManager(BaseUserManager):
     """
     Gerenciador de usuários personalizados que cria e salva usuários e super usuários.
     """
@@ -51,7 +50,7 @@ class FuncionarioManager(BaseUserManager):
         return user
 
 
-class Funcionario(PermissionsMixin, AbstractBaseUser):
+class Usuario(PermissionsMixin, AbstractBaseUser):
     """
     Modelo de usuário personalizado com seus devidos campos
     """
@@ -63,16 +62,15 @@ class Funcionario(PermissionsMixin, AbstractBaseUser):
     is_staff                = models.BooleanField('isAdmin', default=False)
     is_active               = models.BooleanField('active', default=True)
     date_joined             = models.DateTimeField('data de entrada', default=timezone.now, editable=False)
-    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios')
     
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome', 'empresa']
+    REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome']
     
-    objects = FuncionarioManager()
+    objects = UsuarioManager()
     
     class Meta:
-        verbose_name = "funcionario"
-        verbose_name_plural = "funcionarios"
+        verbose_name = "usuario"
+        verbose_name_plural = "usuario"
 
     def get_full_name(self):
         nome_completo = f'{self.primeiro_nome} {self.ultimo_nome}'
@@ -86,3 +84,14 @@ class Funcionario(PermissionsMixin, AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Administrador(models.Model):
+    usuario                 = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='administradores')
+
+
+class Funcionario(models.Model):
+    usuario                 = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='funcionarios')
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios')
+    cargo                   = models.ForeignKey(Cargo, on_delete=models.CASCADE, related_name='funcionarios')
+
