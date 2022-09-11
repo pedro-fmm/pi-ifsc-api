@@ -1,11 +1,13 @@
 from uuid import uuid4
 from django.db import models
+from accounts.models import Usuario
 
 class Empresa(models.Model):
     """
     Modelo das empresas com seus respectivos campos.
     """
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    administrador           = models.OneToOneField('Administrador', on_delete=models.CASCADE, related_name='empresa')
     razao_social            = models.CharField(max_length=256) 
     nome_fantasia           = models.CharField(max_length=256)
     cnpj                    = models.CharField(max_length=14)
@@ -18,6 +20,22 @@ class Empresa(models.Model):
 
     def __str__(self):
         return self.nome_fantasia
+
+
+class Administrador(Usuario):
+
+    class Meta:
+        verbose_name = "administrador"
+        verbose_name_plural = "administradores"
+
+
+class Funcionario(Usuario):
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
+    cargo                   = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='cargo_funcionarios')
+
+    class Meta:
+        verbose_name = "funcionario"
+        verbose_name_plural = "funcionarios"
 
 
 class Fornecedor(models.Model):
@@ -51,7 +69,7 @@ class Cargo(models.Model):
     
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     nome                    = models.CharField(max_length=256)
-    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresas')
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa')
     is_admin                = models.BooleanField(choices=CHOICES, default=False)
     manage_produtos         = models.BooleanField(choices=CHOICES, default=False)
     manage_clientes         = models.BooleanField(choices=CHOICES, default=False)

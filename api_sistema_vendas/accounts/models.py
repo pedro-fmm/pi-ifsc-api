@@ -1,7 +1,6 @@
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from empresas.models import Empresa, Cargo
 
 class UsuarioManager(BaseUserManager):
     """
@@ -70,7 +69,7 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
     
     class Meta:
         verbose_name = "usuario"
-        verbose_name_plural = "usuario"
+        verbose_name_plural = "usuarios"
 
     def get_full_name(self):
         nome_completo = f'{self.primeiro_nome} {self.ultimo_nome}'
@@ -84,14 +83,4 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
-
-class Administrador(models.Model):
-    usuario                 = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='administradores')
-
-
-class Funcionario(models.Model):
-    usuario                 = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='funcionarios')
-    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios')
-    cargo                   = models.ForeignKey(Cargo, on_delete=models.CASCADE, related_name='funcionarios')
 

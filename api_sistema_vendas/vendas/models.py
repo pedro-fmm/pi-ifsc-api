@@ -1,8 +1,7 @@
 from django.db import models
 import uuid
-from empresas.models import Cliente, Empresa
+from empresas.models import Cliente, Empresa, Funcionario
 from produtos.models import Produto
-from accounts.models import Funcionario
 
 def contador():
     numero = Venda.objects.count()

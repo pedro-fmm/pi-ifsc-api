@@ -1,4 +1,4 @@
-from .models import Administrador, Funcionario, Usuario
+from .models import Usuario
 from rest_framework import serializers
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -12,20 +12,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = ('id', 'username', 'primeiro_nome', 'ultimo_nome', 'email', 'is_admin', 'is_staff', 'is_active', 'date_joined')
         read_only_field = ['is_active', 'date_joined']
-
-
-class FuncionarioSerializer(UsuarioSerializer):
-
-    class Meta:
-        model = Funcionario
-        fields = UsuarioSerializer.Meta.fields + ('usuario', 'empresa', 'cargo',)
-
-
-class AdministradorSerializer(UsuarioSerializer):
-
-    class Meta:
-        model = Administrador
-        fields = UsuarioSerializer.Meta.fields + ('usuario',)
 
 
 class LoginSerializer(TokenObtainPairSerializer):

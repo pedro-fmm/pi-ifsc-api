@@ -1,5 +1,20 @@
 from rest_framework import serializers
-from .models import Empresa, Fornecedor, Cargo
+from .models import Empresa, Fornecedor, Cargo, Administrador, Funcionario
+from accounts.serializers import UsuarioSerializer
+
+class FuncionarioSerializer(UsuarioSerializer):
+
+    class Meta:
+        model = Funcionario
+        fields = UsuarioSerializer.Meta.fields + ('usuario', 'empresa', 'cargo',)
+
+
+class AdministradorSerializer(UsuarioSerializer):
+
+    class Meta:
+        model = Administrador
+        fields = UsuarioSerializer.Meta.fields + ('usuario',)
+
 
 class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
