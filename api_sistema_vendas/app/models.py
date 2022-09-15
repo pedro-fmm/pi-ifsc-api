@@ -64,6 +64,7 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
     is_staff                = models.BooleanField('isAdmin', default=False)
     is_active               = models.BooleanField('active', default=True)
     date_joined             = models.DateTimeField('data de entrada', default=timezone.now, editable=False)
+    cargo                   = models.ForeignKey('Cargo', on_delete=models.CASCADE, related_name='usuarios')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome']
