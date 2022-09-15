@@ -46,17 +46,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'accounts',
-    'produtos',
-    'empresas',
-    'storages',
-    'vendas',
+    'app',
     'allauth'
 ]
 
 # Authentication
 
-AUTH_USER_MODEL = 'accounts.Usuario'
+AUTH_USER_MODEL = 'app.Usuario'
 LOGIN_URL = '/'
 
 AUTHENTICATION_BACKENDS = [
