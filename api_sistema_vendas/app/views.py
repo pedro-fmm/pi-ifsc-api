@@ -90,7 +90,7 @@ def empresa_detail(request, pk):
     Retorna, atualiza ou deleta um empresa.
     """
     try:
-        empresa = Empresa.objects.get(pk=pk)
+        empresa = Empresa.objects.get(pk=pk, administrador=request.user.id)
     except Empresa.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 

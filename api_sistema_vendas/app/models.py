@@ -64,7 +64,6 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
     is_staff                = models.BooleanField('isAdmin', default=False)
     is_active               = models.BooleanField('active', default=True)
     date_joined             = models.DateTimeField('data de entrada', default=timezone.now, editable=False)
-    cargo                   = models.ForeignKey('Cargo', on_delete=models.CASCADE, related_name='usuarios')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'primeiro_nome', 'ultimo_nome']
@@ -83,9 +82,11 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
         return self.primeiro_nome
 
     def has_perm(self, perm, obj=None):
-        if perm in self.cargo.grupos:
-            return True        
-        return False
+        try:
+            if perm in self.funcionario.cargo.grupos:
+                return True        
+            return False
+        except: return True
 
     def has_module_perms(self, app_label):
         return True
@@ -133,7 +134,8 @@ class Cargo(models.Model):
 class Funcionario(models.Model):
     usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
-
+    cargo                   = models.ForeignKey('Cargo', on_delete=models.CASCADE, related_name='funcionarios')
+    
     class Meta:
         verbose_name = "funcionario"
         verbose_name_plural = "funcionarios"
