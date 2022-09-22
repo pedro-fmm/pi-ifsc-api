@@ -1,5 +1,3 @@
-from django.contrib.auth.models import Permission
-from app.serializers import PermissionSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -53,8 +51,11 @@ def validate_cpf(cpf: str):
 
 def confere_permissao(func, perm):
     def wrapper(arg, *args, **kwargs):
-        if perm in arg.user.funcionario.cargos:
-            return func(arg, *args, **kwargs)    
-        return Response(status=status.HTTP_403_FORBIDDEN)
+        try:
+            if perm in arg.user.funcionario.cargos:
+                return func(arg, *args, **kwargs)    
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        except:
+            return func(arg, *args, **kwargs)
     return wrapper
 

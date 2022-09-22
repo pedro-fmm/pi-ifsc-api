@@ -11,6 +11,14 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Venda, VendaItem
 from toolbox import confere_permissao
 
+def get_user_empresa(request):
+    try:
+        empresa = request.user.funcionario.empresa.id
+    except:
+        empresa = request.user.empresa.id
+    return empresa
+
+
 # Views - Token
 
 @api_view(['POST'])
@@ -90,7 +98,7 @@ def empresa_detail(request, pk):
     Retorna, atualiza ou deleta um empresa.
     """
     try:
-        empresa = Empresa.objects.get(pk=pk, administrador=request.user.id)
+        empresa = Empresa.objects.get(pk=pk, administrador__id=request.user.id)
     except Empresa.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -121,7 +129,8 @@ def fornecedor_list(request):
     """
     Lista os fornecedores.
     """
-    fornecedores = Fornecedor.objects.all()
+    empresa = get_user_empresa(request)
+    fornecedores = Fornecedor.objects.filter(empresa__id=empresa)
     serializer = FornecedorSerializer(fornecedores, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(fornecedor_list, 'view_fornecedor')
@@ -148,7 +157,8 @@ def fornecedor_detail(request, pk):
     Retorna, atualiza ou deleta um fornecedor.
     """
     try:
-        fornecedor = Fornecedor.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        fornecedor = Fornecedor.objects.get(pk=pk, empresa__id=empresa)
     except Fornecedor.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -178,7 +188,8 @@ def funcionario_list(request):
     """
     Lista os funcionarios
     """
-    func = Funcionario.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    func = Funcionario.objects.filter(empresa__id=empresa)
     serializer = FuncionarioSerializer(func, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(funcionario_list, 'view_funcionario')
@@ -212,7 +223,8 @@ def funcionario_detail(request, pk):
     Retorna, atualiza ou deleta um funcionário.
     """
     try:
-        funcionario = Funcionario.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        funcionario = Funcionario.objects.get(pk=pk, empresa__id=empresa)
     except Funcionario.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -243,7 +255,8 @@ def cargo_list(request):
     """
     Lista os cargos.
     """
-    cargo = Cargo.objects.all()
+    empresa = get_user_empresa(request)
+    cargo = Cargo.objects.filter(empresa__id=empresa)
     serializer = CargoSerializer(cargo, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(cargo_list, 'view_cargo')
@@ -272,7 +285,8 @@ def cargo_detail(request, pk):
     Retorna, atualiza ou deleta um cargo.
     """
     try:
-        cargo = Cargo.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        cargo = Cargo.objects.get(pk=pk, empresa__id=empresa)
     except Cargo.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -303,7 +317,8 @@ def produto_list(request):
     """
     Lista os produtos.
     """
-    produtos = Produto.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    produtos = Produto.objects.filter(empresa__id=empresa)
     serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(produto_list, 'view_produto')
@@ -330,7 +345,8 @@ def produto_detail(request, pk):
     Retorna, atualiza ou deleta um produto.
     """
     try:
-        produto = Produto.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        produto = Produto.objects.get(pk=pk, empresa__id=empresa)
     except Produto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -361,7 +377,8 @@ def categoria_list(request):
     """
     Lista as categorias.
     """
-    categorias = Categoria.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    categorias = Categoria.objects.filter(empresa__id=empresa)
     serializer = CategoriaSerializer(categorias, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(categoria_list, 'view_categoria')
@@ -388,7 +405,8 @@ def categoria_detail(request, pk):
     Retorna, atualiza ou deleta uma categoria.
     """
     try:
-        categoria = Categoria.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        categoria = Categoria.objects.get(pk=pk, empresa__id=empresa)
     except Categoria.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
