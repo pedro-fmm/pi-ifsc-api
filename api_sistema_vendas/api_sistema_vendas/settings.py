@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 from .local_settings import DJANGO_SECRET_KEY, MYSQL_CONN, SQLITE_CONN
 from .local_settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_FILE_OVERWRITE, AWS_S3_OBJECT_PARAMETERS, AWS_S3_CUSTOM_DOMAIN, AWS_DEFAULT_ACL, AWS_S3_ADDRESSING_STYLE
 
@@ -76,8 +77,16 @@ if not DEBUG:
         ),
         'DEFAULT_PERMISSION_CLASSES': [
             'rest_framework.permissions.IsAuthenticated',
-        ]
+        ],
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ),
     }
+    
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -184,3 +193,17 @@ AWS_S3_FILE_OVERWRITE = AWS_S3_FILE_OVERWRITE
 AWS_DEFAULT_ACL = AWS_DEFAULT_ACL  
 
 AWS_S3_ADDRESSING_STYLE = AWS_S3_ADDRESSING_STYLE
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}

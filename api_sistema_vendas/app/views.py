@@ -10,6 +10,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Venda, VendaItem
 from toolbox import confere_permissao
+import logging
+
+logger = logging.getLogger(__name__)
 
 def get_user_empresa(request):
     try:
@@ -72,6 +75,7 @@ def is_authenticated(request):
     """
     response = {"status": "token valido"}
     return Response(response, status=status.HTTP_200_OK)
+
 
 # Views - Permissão
 
