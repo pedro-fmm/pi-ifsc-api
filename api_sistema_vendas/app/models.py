@@ -61,8 +61,9 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
     ultimo_nome             = models.CharField('ultimo nome', max_length=30)
     email                   = models.EmailField('endereco e-mail', max_length=255, unique=True)
     is_admin                = models.BooleanField(default=False)
-    is_staff                = models.BooleanField('isAdmin', default=False)
-    is_active               = models.BooleanField('active', default=True)
+    is_staff                = models.BooleanField(default=False)
+    is_active               = models.BooleanField(default=True)
+    is_superuser            = models.BooleanField(default=False)
     date_joined             = models.DateTimeField('data de entrada', default=timezone.now, editable=False)
 
     USERNAME_FIELD = 'email'

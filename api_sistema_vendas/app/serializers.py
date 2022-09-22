@@ -10,7 +10,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = ('id', 'username', 'primeiro_nome', 'ultimo_nome', 'email', 'is_admin', 'is_staff', 'is_active', 'date_joined')
-        read_only_field = ['is_active', 'date_joined']
+        read_only_field = ['id', 'is_active', 'date_joined']
 
 
 class LoginSerializer(TokenObtainPairSerializer):
@@ -36,7 +36,7 @@ class RegisterSerializer(UsuarioSerializer):
 
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = ('email', 'password', 'username', 'primeiro_nome', 'ultimo_nome')
 
     def create(self, validated_data):
         try:
