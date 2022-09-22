@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from .views import login, register, refresh, permissao_list
+from .views import login, register, refresh, permissao_list, is_authenticated
 from .views import fornecedor_list, funcionario_list, cargo_list, preco_list, faixa_list, genero_list, produto_list, categoria_list, plataforma_list, venda_list, vendaitem_list
 from .views import empresa_create, fornecedor_create, funcionario_create, cargo_create, preco_create, faixa_create, genero_create, produto_create, categoria_create, plataforma_create, venda_create, vendaitem_create
 from .views import empresa_detail, fornecedor_detail, funcionario_detail, cargo_detail, preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail, venda_detail, vendaitem_detail
@@ -10,6 +10,7 @@ urlpatterns = [
     path('auth/login/', login),
     path('auth/register/', register),
     path('auth/refresh/', refresh),
+    path('auth/is-authenticated/', is_authenticated),
     path('permissao/list/', permissao_list),
     # List
     path('fornecedor/list/', fornecedor_list),

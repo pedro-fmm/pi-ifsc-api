@@ -64,9 +64,19 @@ def login(request):
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def is_authenticated(request):
+    """
+    Testa autenticação
+    """
+    response = {"status": "token valido"}
+    return Response(response, status=status.HTTP_200_OK)
+
 # Views - Permissão
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def permissao_list(request):
     """
     Lista os funcionarios
