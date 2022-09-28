@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
-from django.contrib.auth.models import Permission
+from django.contrib.auth.models import Permission, AnonymousUser
 from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CargoSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -15,6 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 def get_user_empresa(request):
+    if isinstance(request.user, AnonymousUser):
+        return None
     try:
         empresa = request.user.funcionario.empresa.id
     except:
@@ -509,7 +511,8 @@ def genero_list(request):
     """
     Lista os gêneros.
     """
-    generos = Genero.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    generos = Genero.objects.filter(empresa__id=empresa)
     serializer = GeneroSerializer(generos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(genero_list, 'view_genero')
@@ -536,7 +539,8 @@ def genero_detail(request, pk):
     Retorna, atualiza ou deleta um gênero.
     """
     try:
-        genero = Genero.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        genero = Genero.objects.get(pk=pk, empresa__id=empresa)
     except Genero.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -567,7 +571,8 @@ def plataforma_list(request):
     """
     Lista as plataformas.
     """
-    plataformas = Plataforma.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    plataformas = Plataforma.objects.filter(empresa__id=empresa)
     serializer = PlataformaSerializer(plataformas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(plataforma_list, 'view_plataforma')
@@ -594,7 +599,8 @@ def plataforma_detail(request, pk):
     Retorna, atualiza ou deleta uma plataforma.
     """
     try:
-        plataforma = Plataforma.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        plataforma = Plataforma.objects.get(pk=pk, empresa__id=empresa)
     except Plataforma.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -625,7 +631,8 @@ def preco_list(request):
     """
     Lista os preços.
     """
-    precos = Preco.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    precos = Preco.objects.filter(empresa__id=empresa)
     serializer = PrecoSerializer(precos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 confere_permissao(preco_list, 'view_preco')
@@ -652,7 +659,8 @@ def preco_detail(request, pk):
     Retorna, atualiza ou deleta um preço.
     """
     try:
-        preco = Preco.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        preco = Preco.objects.get(pk=pk, empresa__id=empresa)
     except Preco.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
