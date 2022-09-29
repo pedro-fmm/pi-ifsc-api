@@ -451,7 +451,8 @@ def faixa_list(request):
     """
     Lista as faixas etárias.
     """
-    faixas = FaixaEtaria.objects.filter(empresa__id=request.user.empresa.id)
+    empresa = get_user_empresa(request)
+    faixas = FaixaEtaria.objects.filter(empresa__id=empresa)
     serializer = FaixaEtariaSerializer(faixas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
