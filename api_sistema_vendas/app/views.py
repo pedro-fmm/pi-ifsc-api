@@ -100,6 +100,8 @@ def empresa_create(request):
     """
     Cria uma empresa.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = EmpresaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -157,6 +159,8 @@ def fornecedor_create(request):
     """
     Cria um fornecedor.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = FornecedorSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -217,9 +221,10 @@ def funcionario_create(request):
     """
     user_serializer = RegisterSerializer(data=request.data)
     if user_serializer.is_valid():
+        empresa = get_user_empresa(request)
         user = user_serializer.save()
-        request_copy = request.POST.copy()
-        request_copy['empresa'] = request.user.empresa.id
+        request_copy = request.data.copy()
+        request_copy['empresa'] = empresa
         request_copy['usuario'] = user
         func_serializer = FuncionarioSerializer(data=request_copy)
         if func_serializer.is_valid():
@@ -273,20 +278,19 @@ def cargo_list(request):
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 @permission_required(['add_cargo'])
 def cargo_create(request):
     """
     Cria um cargo.
     """
-    if request.method == 'POST':
-        serializer = CargoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    serializer = CargoSerializer()
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
+    serializer = CargoSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -340,6 +344,8 @@ def produto_create(request):
     """
     Cria um produto.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = ProdutoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -398,6 +404,8 @@ def categoria_create(request):
     """
     Cria uma categoria.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = CategoriaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -455,6 +463,8 @@ def faixa_create(request):
     """
     Cria uma faixa etária.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = FaixaEtariaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -512,6 +522,8 @@ def genero_create(request):
     """
     Cria um gênero.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = GeneroSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -570,6 +582,8 @@ def plataforma_create(request):
     """
     Cria um plataforma.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = PlataformaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -628,6 +642,8 @@ def preco_create(request):
     """
     Cria um preço.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = PrecoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -686,6 +702,8 @@ def venda_create(request):
     """
     Cria uma venda.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = VendaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -744,6 +762,8 @@ def vendaitem_create(request):
     """
     Cria um item de uma venda.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = VendaItemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
