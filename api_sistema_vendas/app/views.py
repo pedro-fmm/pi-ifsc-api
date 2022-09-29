@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import Permission, AnonymousUser
+from django.contrib.auth.decorators import permission_required
 from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CargoSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -9,7 +10,6 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Venda, VendaItem
-from toolbox import confere_permissao
 import logging
 
 logger = logging.getLogger(__name__)
@@ -109,6 +109,7 @@ def empresa_create(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_empresa', 'change_empresa', 'delete_empresa'])
 def empresa_detail(request, pk):
     """
     Retorna, atualiza ou deleta um empresa.
@@ -132,15 +133,13 @@ def empresa_detail(request, pk):
     elif request.method == 'DELETE':
         empresa.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(empresa_detail, 'view_empresa')
-confere_permissao(empresa_detail, 'change_empresa')
-confere_permissao(empresa_detail, 'delete_empresa')
 
 
 # Views - Fornecedor
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_fornecedor'])
 def fornecedor_list(request):
     """
     Lista os fornecedores.
@@ -149,11 +148,11 @@ def fornecedor_list(request):
     fornecedores = Fornecedor.objects.filter(empresa__id=empresa)
     serializer = FornecedorSerializer(fornecedores, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(fornecedor_list, 'view_fornecedor')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_fornecedor'])
 def fornecedor_create(request):
     """
     Cria um fornecedor.
@@ -163,11 +162,11 @@ def fornecedor_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(fornecedor_create, 'add_fornecedor')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_fornecedor', 'change_fornecedor', 'delete_fornecedor'])
 def fornecedor_detail(request, pk):
     """
     Retorna, atualiza ou deleta um fornecedor.
@@ -192,14 +191,13 @@ def fornecedor_detail(request, pk):
     elif request.method == 'DELETE':
         fornecedor.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(fornecedor_detail, 'view_fornecedor')
-confere_permissao(fornecedor_detail, 'change_fornecedor')
-confere_permissao(fornecedor_detail, 'delete_fornecedor')
+
 
 # Views - Funcionário
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_funcionario'])
 def funcionario_list(request):
     """
     Lista os funcionarios
@@ -208,11 +206,11 @@ def funcionario_list(request):
     func = Funcionario.objects.filter(empresa__id=empresa)
     serializer = FuncionarioSerializer(func, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(funcionario_list, 'view_funcionario')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_funcionario'])
 def funcionario_create(request):
     """
     Cria um Funcionário
@@ -229,11 +227,11 @@ def funcionario_create(request):
             return Response(func_serializer.data, status=status.HTTP_201_CREATED)
         return Response(func_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(funcionario_create, 'add_funcionario')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_funcionario', 'change_funcionario', 'delete_funcionario'])
 def funcionario_detail(request, pk):
     """
     Retorna, atualiza ou deleta um funcionário.
@@ -258,15 +256,13 @@ def funcionario_detail(request, pk):
     elif request.method == 'DELETE':
         funcionario.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(funcionario_detail, 'view_funcionario')
-confere_permissao(funcionario_detail, 'change_funcionario')
-confere_permissao(funcionario_detail, 'delete_funcionario')
 
 
 # Views - Cargo
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_cargo'])
 def cargo_list(request):
     """
     Lista os cargos.
@@ -275,10 +271,10 @@ def cargo_list(request):
     cargo = Cargo.objects.filter(empresa__id=empresa)
     serializer = CargoSerializer(cargo, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(cargo_list, 'view_cargo')
 
 
 @api_view(['GET', 'POST'])
+@permission_required(['add_cargo'])
 def cargo_create(request):
     """
     Cria um cargo.
@@ -291,11 +287,11 @@ def cargo_create(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     serializer = CargoSerializer()
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(cargo_create, 'add_cargo')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_cargo', 'change_cargo', 'delete_cargo'])
 def cargo_detail(request, pk):
     """
     Retorna, atualiza ou deleta um cargo.
@@ -320,15 +316,13 @@ def cargo_detail(request, pk):
     elif request.method == 'DELETE':
         cargo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(cargo_detail, 'view_cargo')
-confere_permissao(cargo_detail, 'change_cargo')
-confere_permissao(cargo_detail, 'delete_cargo')
 
 
 # Views - Produto
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_produto'])
 def produto_list(request):
     """
     Lista os produtos.
@@ -337,11 +331,11 @@ def produto_list(request):
     produtos = Produto.objects.filter(empresa__id=empresa)
     serializer = ProdutoSerializer(produtos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(produto_list, 'view_produto')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_produto'])
 def produto_create(request):
     """
     Cria um produto.
@@ -351,11 +345,11 @@ def produto_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(produto_create, 'add_produto')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_produto', 'change_produto', 'delete_produto'])
 def produto_detail(request, pk):
     """
     Retorna, atualiza ou deleta um produto.
@@ -380,15 +374,13 @@ def produto_detail(request, pk):
     elif request.method == 'DELETE':
         produto.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(produto_detail, 'view_produto')
-confere_permissao(produto_detail, 'change_produto')
-confere_permissao(produto_detail, 'delete_produto')
 
 
 # Views - Categoria
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_categoria'])
 def categoria_list(request):
     """
     Lista as categorias.
@@ -397,11 +389,11 @@ def categoria_list(request):
     categorias = Categoria.objects.filter(empresa__id=empresa)
     serializer = CategoriaSerializer(categorias, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(categoria_list, 'view_categoria')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_categoria'])
 def categoria_create(request):
     """
     Cria uma categoria.
@@ -411,11 +403,11 @@ def categoria_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(categoria_create, 'add_categoria')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_categoria', 'change_categoria', 'delete_categoria'])
 def categoria_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma categoria.
@@ -440,15 +432,13 @@ def categoria_detail(request, pk):
     elif request.method == 'DELETE':
         categoria.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(categoria_detail, 'view_categoria')
-confere_permissao(categoria_detail, 'change_categoria')
-confere_permissao(categoria_detail, 'delete_categoria')
 
 
 # Views - Faixa Etária
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_faixaetaria'])
 def faixa_list(request):
     """
     Lista as faixas etárias.
@@ -456,11 +446,11 @@ def faixa_list(request):
     faixas = FaixaEtaria.objects.filter(empresa__id=request.user.empresa.id)
     serializer = FaixaEtariaSerializer(faixas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(faixa_list, 'view_faixaetaria')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_faixaetaria'])
 def faixa_create(request):
     """
     Cria uma faixa etária.
@@ -470,11 +460,11 @@ def faixa_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(faixa_create, 'add_faixaetaria')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_faixaetaria', 'change_faixaetaria', 'delete_faixaetaria'])
 def faixa_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma faixa etária.
@@ -498,15 +488,13 @@ def faixa_detail(request, pk):
     elif request.method == 'DELETE':
         faixa.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(faixa_detail, 'view_faixaetaria')
-confere_permissao(faixa_detail, 'change_faixaetaria')
-confere_permissao(faixa_detail, 'delete_faixaetaria')
 
 
 # Views - Gênero
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_genero'])
 def genero_list(request):
     """
     Lista os gêneros.
@@ -515,11 +503,11 @@ def genero_list(request):
     generos = Genero.objects.filter(empresa__id=empresa)
     serializer = GeneroSerializer(generos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(genero_list, 'view_genero')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_genero'])
 def genero_create(request):
     """
     Cria um gênero.
@@ -529,11 +517,11 @@ def genero_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(genero_create, 'add_genero')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_genero', 'change_genero', 'delete_categoria'])
 def genero_detail(request, pk):
     """
     Retorna, atualiza ou deleta um gênero.
@@ -558,15 +546,13 @@ def genero_detail(request, pk):
     elif request.method == 'DELETE':
         genero.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(genero_detail, 'view_genero')
-confere_permissao(genero_detail, 'change_genero')
-confere_permissao(genero_detail, 'delete_genero')
 
 
 # Views - Plataforma
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_plataforma'])
 def plataforma_list(request):
     """
     Lista as plataformas.
@@ -575,11 +561,11 @@ def plataforma_list(request):
     plataformas = Plataforma.objects.filter(empresa__id=empresa)
     serializer = PlataformaSerializer(plataformas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(plataforma_list, 'view_plataforma')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_plataforma'])
 def plataforma_create(request):
     """
     Cria um plataforma.
@@ -589,11 +575,11 @@ def plataforma_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(plataforma_create, 'add_plataforma')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_plataforma', 'change_plataforma', 'delete_plataforma'])
 def plataforma_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma plataforma.
@@ -618,15 +604,13 @@ def plataforma_detail(request, pk):
     elif request.method == 'DELETE':
         plataforma.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(plataforma_detail, 'view_plataforma')
-confere_permissao(plataforma_detail, 'change_plataforma')
-confere_permissao(plataforma_detail, 'delete_plataforma')
 
 
 # Views - Preço
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_preco'])
 def preco_list(request):
     """
     Lista os preços.
@@ -635,11 +619,11 @@ def preco_list(request):
     precos = Preco.objects.filter(empresa__id=empresa)
     serializer = PrecoSerializer(precos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(preco_list, 'view_preco')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_preco'])
 def preco_create(request):
     """
     Cria um preço.
@@ -649,11 +633,11 @@ def preco_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(preco_create, 'add_preco')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_preco', 'change_preco', 'delete_preco'])
 def preco_detail(request, pk):
     """
     Retorna, atualiza ou deleta um preço.
@@ -678,36 +662,26 @@ def preco_detail(request, pk):
     elif request.method == 'DELETE':
         preco.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(preco_detail, 'view_preco')
-confere_permissao(preco_detail, 'change_preco')
-confere_permissao(preco_detail, 'delete_preco')
-
-
-@api_view(['GET'])
-def search(request):
-    search_value = request.GET.get('search')
-    produtos = Produto.objects.filter(nome__iregex=rf'((?i)\b{search_value}\b)', descricao__iregex=rf'((?i)\b{search_value}\b)')
-    serializer = ProdutoSerializer(produtos, many=True)
-
-    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # Views - Venda
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_venda'])
 def venda_list(request):
     """
     Lista as vendas.
     """
-    vendas = Venda.objects.filter(empresa=request.user.funcionario.empresa.id)
+    empresa = get_user_empresa(request)
+    vendas = Venda.objects.filter(empresa__id=empresa)
     serializer = VendaSerializer(vendas, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(venda_list, 'view_venda')
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_venda'])
 def venda_create(request):
     """
     Cria uma venda.
@@ -717,17 +691,18 @@ def venda_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(venda_create, 'add_venda')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_venda', 'change_venda', 'delete_venda'])
 def venda_detail(request, pk):
     """
     Retorna, atualiza ou deleta uma venda.
     """
     try:
-        venda = Venda.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        venda = Venda.objects.get(pk=pk, empresa__id=empresa)
     except Venda.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -745,27 +720,26 @@ def venda_detail(request, pk):
     elif request.method == 'DELETE':
         venda.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(venda_detail, 'view_venda')
-confere_permissao(venda_detail, 'change_venda')
-confere_permissao(venda_detail, 'delete_venda')
 
 
 # Views - VendaItem
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_vendaitem'])
 def vendaitem_list(request):
     """
     Lista os itens de uma venda.
     """
-    vendaitens = VendaItem.objects.filter(empresa=request.user.funcionario.empresa.id)
+    empresa = get_user_empresa(request)
+    vendaitens = VendaItem.objects.filter(empresa__id=empresa)
     serializer = VendaItemSerializer(vendaitens, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
-confere_permissao(vendaitem_list, 'view_vendaitem')
 
-
+ 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@permission_required(['add_vendaitem'])
 def vendaitem_create(request):
     """
     Cria um item de uma venda.
@@ -775,17 +749,18 @@ def vendaitem_create(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-confere_permissao(vendaitem_create, 'add_vendaitem')
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
+@permission_required(['view_vendaitem', 'change_vendaitem', 'delete_vendaitem'])
 def vendaitem_detail(request, pk):
     """
     Retorna, atualiza ou deleta um item de uma venda.
     """
     try:
-        vendaitem = VendaItem.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        vendaitem = VendaItem.objects.get(pk=pk, emrpesa__id=empresa)
     except VendaItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -803,7 +778,14 @@ def vendaitem_detail(request, pk):
     elif request.method == 'DELETE':
         vendaitem.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-confere_permissao(vendaitem_detail, 'view_vendaitem')
-confere_permissao(vendaitem_detail, 'change_vendaitem')
-confere_permissao(vendaitem_detail, 'delete_vendaitem')
 
+
+# Search - Views
+
+@api_view(['GET'])
+def search(request):
+    search_value = request.GET.get('search')
+    produtos = Produto.objects.filter(nome__iregex=rf'((?i)\b{search_value}\b)', descricao__iregex=rf'((?i)\b{search_value}\b)')
+    serializer = ProdutoSerializer(produtos, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)

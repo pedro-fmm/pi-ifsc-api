@@ -47,15 +47,3 @@ def validate_cpf(cpf: str):
         return True
 
     return False
-
-
-def confere_permissao(func, perm):
-    def wrapper(arg, *args, **kwargs):
-        try:
-            if perm in arg.user.funcionario.cargos:
-                return func(arg, *args, **kwargs)    
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        except:
-            return func(arg, *args, **kwargs)
-    return wrapper
-
