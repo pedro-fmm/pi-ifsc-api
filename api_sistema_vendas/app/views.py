@@ -802,6 +802,8 @@ def cliente_create(request):
     """
     Cria um item de um cliente.
     """
+    empresa = get_user_empresa(request)
+    request.data['empresa'] = empresa
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -847,4 +849,3 @@ def search(request):
     serializer = ProdutoSerializer(produtos, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
-    
