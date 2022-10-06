@@ -841,7 +841,7 @@ def cliente_detail(request, pk):
     """
     try:
         empresa = get_user_empresa(request)
-        cliente = Cliente.objects.get(pk=pk, emrpesa__id=empresa)
+        cliente = Cliente.objects.get(pk=pk, empresa__id=empresa)
     except Cliente.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -850,6 +850,7 @@ def cliente_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        request.data['empresa'] = cliente.empresa.id
         serializer = ClienteSerializer(cliente, data=request.data)
         if serializer.is_valid():
             serializer.save()
