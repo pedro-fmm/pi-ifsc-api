@@ -4,6 +4,7 @@ from .views import fornecedor_list, funcionario_list, cargo_list, preco_list, fa
 from .views import empresa_create, fornecedor_create, funcionario_create, cargo_create, preco_create, faixa_create, genero_create, produto_create, categoria_create, plataforma_create, venda_create, vendaitem_create, cliente_create
 from .views import empresa_detail, fornecedor_detail, funcionario_detail, cargo_detail, preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail, venda_detail, vendaitem_detail, cliente_detail
 from .views import search
+from .views import relatorio_venda_mensal, relatorio_mais_vendidos, relatorio_comissao_mensal
 
 urlpatterns = [
     # Auth
@@ -55,4 +56,8 @@ urlpatterns = [
     path('cliente/<uuid:pk>', cliente_detail),
     # Pesquisa
     re_path(r'^pesquisa/$', search),
+    # Relatorios
+    path("relatorio/venda_mensal/", relatorio_venda_mensal),
+    path("relatorio/produtos_mais_vendidos/", relatorio_mais_vendidos),
+    path("relatorio/comissao_mensal/", relatorio_comissao_mensal),
 ]
