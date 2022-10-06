@@ -1,3 +1,4 @@
+from email.policy import default
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -136,7 +137,8 @@ class Funcionario(models.Model):
     usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
     cargo                   = models.ForeignKey('Cargo', on_delete=models.CASCADE, related_name='funcionarios')
-    
+    comissao                = models.DecimalField(max_digits=2, decimal_places=2, default=0.00)
+
     class Meta:
         verbose_name = "funcionario"
         verbose_name_plural = "funcionarios"
@@ -293,6 +295,7 @@ class Produto(models.Model):
     data_criacao            = models.DateField(auto_now_add=True)
     estoque                 = models.IntegerField(default=0)
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='produtos')
+    qtd_vendas              = models.IntegerField(default=0)
 
     class Meta:
         ordering            = ["nome"]
@@ -345,4 +348,4 @@ class VendaItem(models.Model):
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     produto                 = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='vendaitens')
     venda                   = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='vendaitens')
-    valor_produto           = models.DecimalField(max_digits=12, decimal_places=2)
+    valor_produto           = models.ForeignKey(Preco, on_delete=models.DO_NOTHING, related_name="vendaitens")

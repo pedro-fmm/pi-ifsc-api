@@ -24,6 +24,24 @@ def get_user_empresa(request):
     return empresa
 
 
+def return_date():
+    from datetime import datetime
+    from calendar import monthrange
+
+    ano = datetime.now().year
+    mes = datetime.now().month
+    primeiro_dia = "01"
+    ultimo_dia = str(monthrange(ano, mes)[1])
+    ano = str(ano)
+    mes = str(mes)
+    if len(mes) == 1:
+        mes = "0" + mes
+    data_comeco = ano + "-" + mes + "-" + primeiro_dia + " 00:00-03:00"
+    data_fim = ano + "-" + mes + "-" + ultimo_dia + " 23:59-03:00"
+
+    return (data_comeco, data_fim)
+
+
 # Views - Token
 
 @api_view(['POST'])
@@ -100,8 +118,6 @@ def empresa_create(request):
     """
     Cria uma empresa.
     """
-    empresa = get_user_empresa(request)
-    request.data['empresa'] = empresa
     serializer = EmpresaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -781,7 +797,7 @@ def vendaitem_detail(request, pk):
     """
     try:
         empresa = get_user_empresa(request)
-        vendaitem = VendaItem.objects.get(pk=pk, emrpesa__id=empresa)
+        vendaitem = VendaItem.objects.get(pk=pk, empresa__id=empresa)
     except VendaItem.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -841,7 +857,7 @@ def cliente_detail(request, pk):
     """
     try:
         empresa = get_user_empresa(request)
-        cliente = Cliente.objects.get(pk=pk, emrpesa__id=empresa)
+        cliente = Cliente.objects.get(pk=pk, empresa__id=empresa)
     except Cliente.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -865,8 +881,70 @@ def cliente_detail(request, pk):
 
 @api_view(['GET'])
 def search(request):
+    empresa = get_user_empresa(request)
     search_value = request.GET.get('search')
-    produtos = Produto.objects.filter(nome__iregex=rf'((?i)\b{search_value}\b)', descricao__iregex=rf'((?i)\b{search_value}\b)')
+    produtos = Produto.objects.filter(nome__iregex=rf'((?i)\b{search_value}\b)', descricao__iregex=rf'((?i)\b{search_value}\b)', empresa__id=empresa)
     serializer = ProdutoSerializer(produtos, many=True)
 
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+# Relatórios - Views
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_produto'])
+def relatorio_mais_vendidos(request):
+    empresa = get_user_empresa(request)
+    produtos = Produto.objects.filter(empresa__id=empresa).order_by('-qtd_vendas').values()
+    serializer = ProdutoSerializer(produtos, many=True)
+
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_venda'])
+def relatorio_venda_mensal(request):
+
+    def get_valor(obj):
+        return obj['valor']
+
+    data_comeco, data_fim = return_date()
+
+    empresa = get_user_empresa(request)
+    vendas = Venda.objects.filter(empresa__id=empresa, data__range=[data_comeco, data_fim])
+    serializer = VendaSerializer(vendas, many=True)
+    valor = sum(map(get_valor, serializer.data))
+
+    return Response({"valor": valor}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_funcionario', 'view_venda'])
+def relatorio_comissao_mensal(request):
+    empresa = get_user_empresa(request)
+    try: 
+        pk = request.user.id
+        funcionario = Funcionario.objects.get(pk=pk, empresa__id=empresa)
+    except:
+        return Response({"msg": "Nao e um funcionario"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_valor(obj):
+        return obj['valor']
+
+    data_comeco, data_fim = return_date()
+    vendas = Venda.objects.filter(empresa__id=empresa, vendedor=funcionario, data__range=[data_comeco, data_fim])
+    serializer = VendaSerializer(vendas, many=True)
+    valor = sum(map(get_valor, serializer.data)) / 100 * float(funcionario.comissao)
+
+    return Response({"valor": valor}, status=status.HTTP_200_OK)
+
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# @permission_required(['view_produto'])
+# def relatorio_mais_vendidos(request):
+#     empresa = get_user_empresa(request)
+    
+#     return Response(serializer.data, status=status.HTTP_200_OK)
