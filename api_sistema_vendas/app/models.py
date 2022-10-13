@@ -1,4 +1,3 @@
-from email.policy import default
 from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -263,6 +262,7 @@ class Preco(models.Model):
     Modelo das faixas etárias com seus respectivos campos
     """
     id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    produto                 = models.ForeignKey('Produto', on_delete=models.CASCADE, related_name='precos')
     data_alteracao          = models.DateTimeField(auto_now_add=True)
     preco_custo             = models.DecimalField(max_digits=8, decimal_places=2)
     preco_venda             = models.DecimalField(max_digits=8, decimal_places=2)

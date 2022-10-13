@@ -642,12 +642,12 @@ def plataforma_detail(request, pk):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @permission_required(['view_preco'])
-def preco_list(request):
+def preco_list(request, pk):
     """
     Lista os preços.
     """
     empresa = get_user_empresa(request)
-    precos = Preco.objects.filter(empresa__id=empresa)
+    precos = Preco.objects.filter(empresa__id=empresa, produto=pk)
     serializer = PrecoSerializer(precos, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -951,12 +951,12 @@ def dados_cadastro_produto(request):
     empresa = get_user_empresa(request)
     categorias = Categoria.objects.filter(empresa__id=empresa)
     serializer_categorias = CategoriaSerializer(categorias, many=True)
-    plataformas = Categoria.objects.filter(empresa__id=empresa)
-    serializer_plataformas = CategoriaSerializer(plataformas, many=True)
-    generos = Categoria.objects.filter(empresa__id=empresa)
-    serializer_generos = CategoriaSerializer(generos, many=True)
-    faixasetarias = Categoria.objects.filter(empresa__id=empresa)
-    serializer_faixasetarias = CategoriaSerializer(faixasetarias, many=True)
+    plataformas = Plataforma.objects.filter(empresa__id=empresa)
+    serializer_plataformas = PlataformaSerializer(plataformas, many=True)
+    generos = Genero.objects.filter(empresa__id=empresa)
+    serializer_generos = GeneroSerializer(generos, many=True)
+    faixasetarias = FaixaEtaria.objects.filter(empresa__id=empresa)
+    serializer_faixasetarias = FaixaEtariaSerializer(faixasetarias, many=True)
 
     dados = {
         "categorias": serializer_categorias.data,

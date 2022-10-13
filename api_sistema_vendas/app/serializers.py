@@ -115,9 +115,26 @@ class PrecoSerializer(serializers.ModelSerializer):
 
 
 class ProdutoSerializer(serializers.ModelSerializer):
+    plataforma = serializers.SerializerMethodField()
+    faixa_etaria = serializers.SerializerMethodField()
+    genero = serializers.SerializerMethodField()
+    categoria = serializers.SerializerMethodField()
+
     class Meta:
         model = Produto
         fields = '__all__'
+
+    def get_plataforma(self, obj):
+        return obj.plataforma.nome
+
+    def get_faixa_etaria(self, obj):
+        return obj.faixa_etaria.descricao
+
+    def get_genero(self, obj):
+        return obj.genero.nome
+
+    def get_categoria(self, obj):
+        return obj.categoria.nome
 
 
 class VendaSerializer(serializers.ModelSerializer):

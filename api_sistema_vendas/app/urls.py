@@ -19,7 +19,7 @@ urlpatterns = [
     path('funcionario/list/', funcionario_list),
     path('cargo/list/', cargo_list),
     path('categoria/list/', categoria_list),
-    path('preco/list/', preco_list),
+    path('preco/list/<uuid:pk>', preco_list),
     path('faixa/list/', faixa_list),
     path('genero/list/', genero_list),
     path('produto/list/', produto_list),
