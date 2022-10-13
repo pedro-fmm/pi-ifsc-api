@@ -942,10 +942,28 @@ def relatorio_comissao_mensal(request):
     return Response({"valor": valor}, status=status.HTTP_200_OK)
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# @permission_required(['view_produto'])
-# def relatorio_mais_vendidos(request):
-#     empresa = get_user_empresa(request)
+# Dados juntos - Views
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_categoria', 'view_plataforma', 'view_genero', 'view_faixaetaria'])
+def dados_cadastro_produto(request):
+    empresa = get_user_empresa(request)
+    categorias = Categoria.objects.filter(empresa__id=empresa)
+    serializer_categorias = CategoriaSerializer(categorias, many=True)
+    plataformas = Categoria.objects.filter(empresa__id=empresa)
+    serializer_plataformas = CategoriaSerializer(plataformas, many=True)
+    generos = Categoria.objects.filter(empresa__id=empresa)
+    serializer_generos = CategoriaSerializer(generos, many=True)
+    faixasetarias = Categoria.objects.filter(empresa__id=empresa)
+    serializer_faixasetarias = CategoriaSerializer(faixasetarias, many=True)
+
+    dados = {
+        "categorias": serializer_categorias.data,
+        "plataformas": serializer_plataformas.data,
+        "generos": serializer_generos.data,
+        "faixas": serializer_faixasetarias.data
+    }
+
+    return Response(dados, status=status.HTTP_200_OK)
     
-#     return Response(serializer.data, status=status.HTTP_200_OK)

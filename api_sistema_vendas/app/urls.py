@@ -5,6 +5,7 @@ from .views import empresa_create, fornecedor_create, funcionario_create, cargo_
 from .views import empresa_detail, fornecedor_detail, funcionario_detail, cargo_detail, preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail, venda_detail, vendaitem_detail, cliente_detail
 from .views import search
 from .views import relatorio_venda_mensal, relatorio_mais_vendidos, relatorio_comissao_mensal
+from .views import dados_cadastro_produto
 
 urlpatterns = [
     # Auth
@@ -60,4 +61,6 @@ urlpatterns = [
     path("relatorio/venda_mensal/", relatorio_venda_mensal),
     path("relatorio/produtos_mais_vendidos/", relatorio_mais_vendidos),
     path("relatorio/comissao_mensal/", relatorio_comissao_mensal),
+    # Dados juntos
+    path("dados/cadastro_produto/", dados_cadastro_produto),
 ]
