@@ -119,6 +119,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
     faixa_etaria = serializers.SerializerMethodField()
     genero = serializers.SerializerMethodField()
     categoria = serializers.SerializerMethodField()
+    preco = serializers.SerializerMethodField()
 
     class Meta:
         model = Produto
@@ -136,6 +137,11 @@ class ProdutoSerializer(serializers.ModelSerializer):
     def get_categoria(self, obj):
         return obj.categoria.nome
 
+    def get_preco(self, obj):
+        try:
+            return obj.precos.order_by('-data_alteracao')[0].preco_venda
+        except:
+            return "Sem preço"
 
 class VendaSerializer(serializers.ModelSerializer):
     class Meta:

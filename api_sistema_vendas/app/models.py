@@ -275,9 +275,9 @@ class Preco(models.Model):
         verbose_name_plural = "preços"
 
     def __str__(self):
-        return self.preco_venda
+        return str(self.preco_venda)
 
- 
+
 class Produto(models.Model):
     """
     Modelo dos produtos com seus respectivos campos.
