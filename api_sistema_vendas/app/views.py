@@ -205,6 +205,10 @@ def fornecedor_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = FornecedorSerializer(fornecedor, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -271,6 +275,10 @@ def funcionario_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = FuncionarioSerializer(funcionario, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -333,6 +341,10 @@ def cargo_detail(request, pk):
         return Response(serializer.data)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = CargoSerializer(cargo, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -397,6 +409,10 @@ def produto_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = ProdutoSerializer(produto, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -460,6 +476,10 @@ def categoria_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = CategoriaSerializer(categoria, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -513,7 +533,8 @@ def faixa_detail(request, pk):
     Retorna, atualiza ou deleta uma faixa etária.
     """
     try:
-        faixa = FaixaEtaria.objects.get(pk=pk)
+        empresa = get_user_empresa(request)
+        faixa = FaixaEtaria.objects.get(pk=pk, empresa__id=empresa)
     except FaixaEtaria.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -522,6 +543,10 @@ def faixa_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = FaixaEtariaSerializer(faixa, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -585,6 +610,10 @@ def genero_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = GeneroSerializer(genero, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -648,6 +677,10 @@ def plataforma_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = PlataformaSerializer(plataforma, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -711,6 +744,10 @@ def preco_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = PrecoSerializer(preco, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -774,6 +811,10 @@ def venda_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = VendaSerializer(venda, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -837,6 +878,10 @@ def vendaitem_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = VendaItemSerializer(vendaitem, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -900,7 +945,10 @@ def cliente_detail(request, pk):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'PUT':
-        request.data['empresa'] = cliente.empresa.id
+        _mutable = request.POST._mutable
+        request.POST._mutable = True
+        request.data['empresa'] = empresa
+        request.POST._mutable = _mutable
         serializer = ClienteSerializer(cliente, data=request.data)
         if serializer.is_valid():
             serializer.save()

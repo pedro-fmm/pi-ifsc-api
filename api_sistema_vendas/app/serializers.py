@@ -126,15 +126,23 @@ class ProdutoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_plataforma(self, obj):
+        if self.context['request'].method == 'POST':
+            return self.context['request']['plataforma']
         return obj.plataforma.nome
 
     def get_faixa_etaria(self, obj):
+        if self.context['request'].method == 'POST':
+            return self.context['request']['faixa_etaria']
         return obj.faixa_etaria.descricao
 
     def get_genero(self, obj):
+        if self.context['request'].method == 'POST':
+            return self.context['request']['genero']
         return obj.genero.nome
 
     def get_categoria(self, obj):
+        if self.context['request'].method == 'POST':
+            return self.context['request']['categoria']
         return obj.categoria.nome
 
     def get_preco(self, obj):
