@@ -9,7 +9,7 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Venda, VendaItem, Cliente
+from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Usuario, Venda, VendaItem, Cliente
 import logging
 
 logger = logging.getLogger(__name__)
@@ -176,10 +176,10 @@ def fornecedor_create(request):
     Cria um fornecedor.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = FornecedorSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -304,10 +304,10 @@ def cargo_create(request):
     Cria um cargo.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = CargoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -367,11 +367,11 @@ def produto_create(request):
     Cria um produto.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
     request.data['imagem'] = request.FILES['imagem']
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = ProdutoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -431,10 +431,10 @@ def categoria_create(request):
     Cria uma categoria.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = CategoriaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -494,10 +494,10 @@ def faixa_create(request):
     Cria uma faixa etária.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = FaixaEtariaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -556,10 +556,10 @@ def genero_create(request):
     Cria um gênero.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = GeneroSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -619,10 +619,10 @@ def plataforma_create(request):
     Cria um plataforma.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = PlataformaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -682,10 +682,10 @@ def preco_create(request):
     Cria um preço.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = PrecoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -745,10 +745,10 @@ def venda_create(request):
     Cria uma venda.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = VendaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -808,10 +808,10 @@ def vendaitem_create(request):
     Cria um item de uma venda.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = VendaItemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -871,10 +871,10 @@ def cliente_create(request):
     Cria um item de um cliente.
     """
     empresa = get_user_empresa(request)
-    _mutable = request.data._mutable
-    request.data._mutable = True
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
     request.data['empresa'] = empresa
-    request.data._mutable = _mutable
+    request.POST._mutable = _mutable
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -961,19 +961,36 @@ def relatorio_comissao_mensal(request):
     empresa = get_user_empresa(request)
     try: 
         pk = request.user.id
-        funcionario = Funcionario.objects.get(pk=pk, empresa__id=empresa)
+        if pk == Empresa.objects.get(pk=empresa).administrador.pk:
+            comissao_adm()
+        else:
+            funcionario = Funcionario.objects.get(pk=pk, empresa__id=empresa)
+            comissao_func(funcionario)
     except:
         return Response({"msg": "Nao e um funcionario"}, status=status.HTTP_400_BAD_REQUEST)
+
+    data_comeco, data_fim = return_date()
+    
+    def get_valor_funcionarios(obj):
+        valor = obj.valor
+        comissao = obj.vendedor.comissao
+        valor_final = valor / 100 * float(comissao)
+        return valor_final
 
     def get_valor(obj):
         return obj['valor']
 
-    data_comeco, data_fim = return_date()
-    vendas = Venda.objects.filter(empresa__id=empresa, vendedor=funcionario, data__range=[data_comeco, data_fim])
-    serializer = VendaSerializer(vendas, many=True)
-    valor = sum(map(get_valor, serializer.data)) / 100 * float(funcionario.comissao)
+    def comissao_adm():
+        vendas = Venda.objects.filter(empresa__id=empresa, data__range=[data_comeco, data_fim])
+        valor = sum(map(get_valor_funcionarios, vendas))
+        return Response({"valor": valor}, status=status.HTTP_200_OK)
 
-    return Response({"valor": valor}, status=status.HTTP_200_OK)
+    def comissao_func(funcionario):
+        vendas = Venda.objects.filter(empresa__id=empresa, vendedor=funcionario, data__range=[data_comeco, data_fim])
+        serializer = VendaSerializer(vendas, many=True)
+        valor = sum(map(get_valor, serializer.data)) / 100 * float(funcionario.comissao)
+
+        return Response({"valor": valor}, status=status.HTTP_200_OK)
 
 
 # Dados juntos - Views
