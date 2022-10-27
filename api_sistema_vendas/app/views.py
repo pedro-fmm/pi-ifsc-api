@@ -176,7 +176,10 @@ def fornecedor_create(request):
     Cria um fornecedor.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = FornecedorSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -301,7 +304,10 @@ def cargo_create(request):
     Cria um cargo.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = CargoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -361,7 +367,11 @@ def produto_create(request):
     Cria um produto.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data['imagem'] = request.FILES['imagem']
+    request.data._mutable = _mutable
     serializer = ProdutoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -421,7 +431,10 @@ def categoria_create(request):
     Cria uma categoria.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = CategoriaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -481,7 +494,10 @@ def faixa_create(request):
     Cria uma faixa etária.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = FaixaEtariaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -540,7 +556,10 @@ def genero_create(request):
     Cria um gênero.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = GeneroSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -600,7 +619,10 @@ def plataforma_create(request):
     Cria um plataforma.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = PlataformaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -660,7 +682,10 @@ def preco_create(request):
     Cria um preço.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = PrecoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -720,7 +745,10 @@ def venda_create(request):
     Cria uma venda.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = VendaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -780,7 +808,10 @@ def vendaitem_create(request):
     Cria um item de uma venda.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = VendaItemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -840,7 +871,10 @@ def cliente_create(request):
     Cria um item de um cliente.
     """
     empresa = get_user_empresa(request)
+    _mutable = request.data._mutable
+    request.data._mutable = True
     request.data['empresa'] = empresa
+    request.data._mutable = _mutable
     serializer = ClienteSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
