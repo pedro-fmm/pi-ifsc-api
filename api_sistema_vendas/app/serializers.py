@@ -115,34 +115,26 @@ class PrecoSerializer(serializers.ModelSerializer):
 
 
 class ProdutoSerializer(serializers.ModelSerializer):
-    plataforma = serializers.SerializerMethodField()
-    faixa_etaria = serializers.SerializerMethodField()
-    genero = serializers.SerializerMethodField()
-    categoria = serializers.SerializerMethodField()
+    plataforma_nome = serializers.SerializerMethodField()
+    faixa_etaria_nome = serializers.SerializerMethodField()
+    genero_nome = serializers.SerializerMethodField()
+    categoria_nome = serializers.SerializerMethodField()
     preco = serializers.SerializerMethodField()
 
     class Meta:
         model = Produto
         fields = '__all__'
 
-    def get_plataforma(self, obj):
-        if self.context['request'].method == 'POST':
-            return self.context['request']['plataforma']
+    def get_plataforma_nome(self, obj):
         return obj.plataforma.nome
 
-    def get_faixa_etaria(self, obj):
-        if self.context['request'].method == 'POST':
-            return self.context['request']['faixa_etaria']
+    def get_faixa_etaria_nome(self, obj):
         return obj.faixa_etaria.descricao
 
-    def get_genero(self, obj):
-        if self.context['request'].method == 'POST':
-            return self.context['request']['genero']
+    def get_genero_nome(self, obj):
         return obj.genero.nome
 
-    def get_categoria(self, obj):
-        if self.context['request'].method == 'POST':
-            return self.context['request']['categoria']
+    def get_categoria_nome(self, obj):
         return obj.categoria.nome
 
     def get_preco(self, obj):
@@ -150,6 +142,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
             return obj.precos.order_by('-data_alteracao')[0].preco_venda
         except:
             return "Sem preço"
+
 
 class VendaSerializer(serializers.ModelSerializer):
     class Meta:

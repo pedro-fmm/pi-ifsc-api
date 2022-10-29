@@ -399,7 +399,7 @@ def produto_detail(request, pk):
     Retorna, atualiza ou deleta um produto.
     """
     try:
-        empresa = get_user_empresa(request)
+        empresa = get_user_empresa(request) 
         produto = Produto.objects.get(pk=pk, empresa__id=empresa)
     except Produto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
