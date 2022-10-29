@@ -33,7 +33,7 @@ urlpatterns = [
     path('funcionario/create/', funcionario_create),
     path('cargo/create/', cargo_create),
     path('categoria/create/', categoria_create),
-    path('preco/create/', preco_create),
+    path('preco/create/<uuid:produto_pk>', preco_create),
     path('faixa/create/', faixa_create),
     path('genero/create/', genero_create),
     path('produto/create/', produto_create),

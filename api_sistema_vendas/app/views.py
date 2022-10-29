@@ -710,7 +710,7 @@ def preco_list(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @permission_required(['add_preco'])
-def preco_create(request):
+def preco_create(request, produto_pk):
     """
     Cria um preço.
     """
@@ -718,6 +718,7 @@ def preco_create(request):
     _mutable = request.POST._mutable
     request.POST._mutable = True
     request.data['empresa'] = empresa
+    request.data['produto'] = produto_pk
     request.POST._mutable = _mutable
     serializer = PrecoSerializer(data=request.data)
     if serializer.is_valid():
