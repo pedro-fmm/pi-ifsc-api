@@ -1,4 +1,4 @@
-from .models import Usuario, Empresa, Fornecedor, Funcionario, Cargo, Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto, Venda, VendaItem, Cliente
+from .models import Usuario, Empresa, Fornecedor, Funcionario, Cargo, Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto, Venda, VendaItem, Cliente, CompraEstoque
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
@@ -153,4 +153,10 @@ class VendaSerializer(serializers.ModelSerializer):
 class VendaItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = VendaItem
+        fields = '__all__'
+
+
+class CompraEstoqueSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CompraEstoque
         fields = '__all__'

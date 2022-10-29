@@ -2,14 +2,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import Permission, AnonymousUser
 from django.contrib.auth.decorators import permission_required
-from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CargoSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer, ClienteSerializer
+from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CargoSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer, ClienteSerializer, CompraEstoqueSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Usuario, Venda, VendaItem, Cliente
+from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Usuario, Venda, VendaItem, Cliente, CompraEstoque
 import logging
 
 logger = logging.getLogger(__name__)
@@ -961,7 +961,72 @@ def cliente_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# Search - Views
+# Views - CompraEstoque
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_compraestoque'])
+def compra_estoque_list(request):
+    """
+    Lista os itens de uma Compra de Estoque.
+    """
+    empresa = get_user_empresa(request)
+    compras_estoque = CompraEstoque.objects.filter(empresa__id=empresa)
+    serializer = CompraEstoqueSerializer(compras_estoque, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+ 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@permission_required(['add_compraestoque'])
+def compra_estoque_create(request, produto_pk):
+    """
+    Cria um item de uma Compra de Estoque.
+    """
+    produto = Produto.objects.get(pk=produto_pk)
+    empresa = get_user_empresa(request)
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
+    request.data['empresa'] = empresa
+    request.data['produto'] = produto_pk
+    request.data['preco'] = produto.order_by('-data_alteracao')[0].preco_custo
+    request.data['valor_total'] = request.data['preco'] * request.data['qtd']
+    request.POST._mutable = _mutable
+    serializer = CompraEstoqueSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        produto.estoque += serializer.data['qtd']
+        produto.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'DELETE'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_compraestoque', 'delete_compraestoque'])
+def compra_estoque_detail(request, pk):
+    """
+    Retorna, atualiza ou deleta um item de uma Compra de Estoque.
+    """
+    try:
+        empresa = get_user_empresa(request)
+        compra_estoque = CompraEstoque.objects.get(pk=pk, empresa__id=empresa)
+    except CompraEstoque.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CompraEstoqueSerializer(compra_estoque)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        produto = compra_estoque.produto
+        produto.estoque -= compra_estoque.qtd
+        produto.save()
+        compra_estoque.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# Views - Search
 
 @api_view(['GET'])
 def search(request):
@@ -972,7 +1037,7 @@ def search(request):
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-# Relatórios - Views
+# Views - Relatórios
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1042,7 +1107,7 @@ def relatorio_comissao_mensal(request):
         return Response({"valor": valor}, status=status.HTTP_200_OK)
 
 
-# Dados juntos - Views
+# Views - Dados juntos
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

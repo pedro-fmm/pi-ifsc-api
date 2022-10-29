@@ -349,3 +349,11 @@ class VendaItem(models.Model):
     produto                 = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='vendaitens')
     venda                   = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='vendaitens')
     valor_produto           = models.ForeignKey(Preco, on_delete=models.DO_NOTHING, related_name="vendaitens")
+
+
+class CompraEstoque(models.Model):
+    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='comprasestoque')
+    produto                 = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='comprasestoque')
+    qtd                     = models.IntegerField()
+    preco                   = models.DecimalField(max_digits=12, decimal_places=2)
+    valor_total             = models.DecimalField(max_digits=12, decimal_places=2)
