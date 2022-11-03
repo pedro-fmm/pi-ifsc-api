@@ -83,11 +83,7 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
         return self.primeiro_nome
 
     def has_perm(self, perm, obj=None):
-        try:
-            if perm in self.funcionario.cargo.grupos:
-                return True        
-            return False
-        except: return True
+        return True
 
     def has_module_perms(self, app_label):
         return True
@@ -113,29 +109,9 @@ class Empresa(models.Model):
         return self.nome_fantasia
 
 
-class Cargo(models.Model):
-    """
-    Modelo dos cargos
-    """
-    
-    id                      = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    nome                    = models.CharField(max_length=256)
-    empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa')
-    permissoes              = models.ManyToManyField(Permission)
-
-    class Meta:
-        ordering            = ["nome"]
-        verbose_name        = "cargo"
-        verbose_name_plural = "cargos"
-
-    def __str__(self):
-        return self.nome
-
-
 class Funcionario(models.Model):
     usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
-    cargo                   = models.ForeignKey('Cargo', on_delete=models.CASCADE, related_name='funcionarios')
     comissao                = models.DecimalField(max_digits=2, decimal_places=2, default=0.00)
 
     class Meta:
@@ -341,7 +317,7 @@ class Venda(models.Model):
         verbose_name_plural = "vendas"
 
     def __str__(self):
-        return self.numero
+        return str(self.id)
 
 
 class VendaItem(models.Model):

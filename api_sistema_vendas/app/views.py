@@ -2,14 +2,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from django.contrib.auth.models import Permission, AnonymousUser
 from django.contrib.auth.decorators import permission_required
-from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CargoSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer, ClienteSerializer, CompraEstoqueSerializer
+from .serializers import LoginSerializer, RegisterSerializer, PermissionSerializer, EmpresaSerializer, FornecedorSerializer, FuncionarioSerializer, CategoriaSerializer, FaixaEtariaSerializer, GeneroSerializer, PlataformaSerializer, PrecoSerializer, ProdutoSerializer, VendaSerializer, VendaItemSerializer, ClienteSerializer, CompraEstoqueSerializer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .models import Empresa, Fornecedor, Funcionario, Cargo, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Usuario, Venda, VendaItem, Cliente, CompraEstoque
+from .models import Empresa, Fornecedor, Funcionario, Produto, FaixaEtaria, Categoria, Genero, Plataforma, Preco, Usuario, Venda, VendaItem, Cliente, CompraEstoque
 import logging
 
 logger = logging.getLogger(__name__)
@@ -287,72 +287,6 @@ def funcionario_detail(request, pk):
 
     elif request.method == 'DELETE':
         funcionario.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# Views - Cargo
-
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-@permission_required(['view_cargo'])
-def cargo_list(request):
-    """
-    Lista os cargos.
-    """
-    empresa = get_user_empresa(request)
-    cargo = Cargo.objects.filter(empresa__id=empresa)
-    serializer = CargoSerializer(cargo, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-@permission_required(['add_cargo'])
-def cargo_create(request):
-    """
-    Cria um cargo.
-    """
-    empresa = get_user_empresa(request)
-    _mutable = request.POST._mutable
-    request.POST._mutable = True
-    request.data['empresa'] = empresa
-    request.POST._mutable = _mutable
-    serializer = CargoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
-@permission_required(['view_cargo', 'change_cargo', 'delete_cargo'])
-def cargo_detail(request, pk):
-    """
-    Retorna, atualiza ou deleta um cargo.
-    """
-    try:
-        empresa = get_user_empresa(request)
-        cargo = Cargo.objects.get(pk=pk, empresa__id=empresa)
-    except Cargo.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        serializer = CargoSerializer(cargo)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        _mutable = request.POST._mutable
-        request.POST._mutable = True
-        request.data['empresa'] = empresa
-        request.POST._mutable = _mutable
-        serializer = CargoSerializer(cargo, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        cargo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -852,11 +786,19 @@ def vendaitem_create(request):
     empresa = get_user_empresa(request)
     _mutable = request.POST._mutable
     request.POST._mutable = True
-    request.data['empresa'] = empresa
+    produto = Produto.objects.get(pk=request.data['produto'])
+    try:
+        request.data['valor_produto'] = produto.precos.order_by('-data_alteracao')[0].id
+    except:
+        logger.warn('Produto sem preços definido')
+    request.data['empresa'] = empresa 
     request.POST._mutable = _mutable
     serializer = VendaItemSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
+        venda = Venda.objects.get(pk=request.data['venda'])
+        venda.valor += produto.precos.order_by('-data_alteracao')[0].preco_venda
+        venda.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

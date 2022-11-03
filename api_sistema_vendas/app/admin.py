@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib import admin
-from .models import Empresa, Fornecedor, Cliente, Funcionario, Cargo, Usuario, Plataforma, FaixaEtaria, Genero, Categoria, Preco, Produto, Venda, VendaItem
+from .models import Empresa, Fornecedor, Cliente, Funcionario, Usuario, Plataforma, FaixaEtaria, Genero, Categoria, Preco, Produto, Venda, VendaItem
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.core.exceptions import ValidationError
@@ -64,7 +64,6 @@ admin.site.register(Funcionario)
 admin.site.register(Empresa)
 admin.site.register(Fornecedor)
 admin.site.register(Cliente)
-admin.site.register(Cargo)
 admin.site.register(Plataforma)
 admin.site.register(FaixaEtaria)
 admin.site.register(Genero)

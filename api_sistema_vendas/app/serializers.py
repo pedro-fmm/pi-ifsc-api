@@ -1,4 +1,4 @@
-from .models import Usuario, Empresa, Fornecedor, Funcionario, Cargo, Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto, Venda, VendaItem, Cliente, CompraEstoque
+from .models import Usuario, Empresa, Fornecedor, Funcionario, Categoria, Genero, FaixaEtaria, Plataforma, Preco, Produto, Venda, VendaItem, Cliente, CompraEstoque
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
@@ -69,12 +69,6 @@ class EmpresaSerializer(serializers.ModelSerializer):
 class FornecedorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fornecedor
-        fields = '__all__'
-
-
-class CargoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cargo
         fields = '__all__'
 
 
@@ -151,9 +145,18 @@ class VendaSerializer(serializers.ModelSerializer):
 
 
 class VendaItemSerializer(serializers.ModelSerializer):
+    
+    preco = serializers.SerializerMethodField()
+    
     class Meta:
         model = VendaItem
         fields = '__all__'
+
+    def get_preco(self, obj):
+        try:
+            return obj.precos.order_by('-data_alteracao')[0].preco_venda
+        except:
+            return "Sem preço"
 
 
 class CompraEstoqueSerializer(serializers.ModelSerializer):
