@@ -4,6 +4,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login, Permission
 from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
 
 class UsuarioSerializer(serializers.ModelSerializer):
 
@@ -139,9 +140,47 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
 
 class VendaSerializer(serializers.ModelSerializer):
+    vendedor_nome   = serializers.SerializerMethodField()
+    cliente_nome    = serializers.SerializerMethodField()
+    dia             = serializers.SerializerMethodField()
+    hora            = serializers.SerializerMethodField()
+
     class Meta:
         model = Venda
         fields = '__all__'
+
+    def get_vendedor_nome(self, obj):
+        try:
+            return obj.vendedor.usuario.primeiro_nome
+        except:
+            return "Vendedor sem nome cadastrado."
+
+    def get_cliente_nome(self, obj):
+        try:
+            return obj.cliente.nome
+        except:
+            return "Cliente sem nome cadastrado."
+
+    def get_dia(self, obj):
+        try:
+            data = obj.data
+            timestamp = datetime.timestamp(data)
+            data = datetime.fromtimestamp(timestamp)
+            return f'{data.day}/{data.month}/{data.year}'
+        except:
+            return "Venda sem data cadastrada."
+    
+    def get_hora(self, obj):
+        try:
+            data = obj.data
+            timestamp = datetime.timestamp(data)
+            data = datetime.fromtimestamp(timestamp)
+            if len(str(data.minute)) < 2:
+                return f'{data.hour}:0{data.minute}'
+            return f'{data.hour}:{data.minute}'
+        except:
+            return "Venda sem minuto cadastrado."
+
 
 
 class VendaItemSerializer(serializers.ModelSerializer):
