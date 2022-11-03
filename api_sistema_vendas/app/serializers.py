@@ -185,6 +185,7 @@ class VendaSerializer(serializers.ModelSerializer):
 
 class VendaItemSerializer(serializers.ModelSerializer):
     
+    nome  = serializers.SerializerMethodField()
     preco = serializers.SerializerMethodField()
     
     class Meta:
@@ -193,10 +194,15 @@ class VendaItemSerializer(serializers.ModelSerializer):
 
     def get_preco(self, obj):
         try:
-            return obj.precos.order_by('-data_alteracao')[0].preco_venda
+            return obj.produto.precos.order_by('-data_alteracao')[0].preco_venda
         except:
             return "Sem preço"
 
+    def get_nome(self, obj):
+        try:
+            return obj.produto.nome
+        except:
+            return "Sem nome"
 
 class CompraEstoqueSerializer(serializers.ModelSerializer):
     class Meta:

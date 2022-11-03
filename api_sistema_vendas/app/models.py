@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from uuid import uuid4
 from django.contrib.auth.models import Permission
-from django.db import models
+from django.db.models import Max
 
 class UsuarioManager(BaseUserManager):
     """
@@ -293,13 +293,16 @@ class Produto(models.Model):
         else:
             return False
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 def contador():
-    numero = Venda.objects.count()
+    numero = Venda.objects.aggregate(Max('numero'))
     if not numero:
         return 1
     else:
-        return numero + 1
+        return numero['numero__max'] + 1
 
 
 class Venda(models.Model):
