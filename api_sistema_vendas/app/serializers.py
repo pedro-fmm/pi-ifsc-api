@@ -56,9 +56,31 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 class FuncionarioSerializer(UsuarioSerializer):
 
+    primeiro_nome = serializers.SerializerMethodField()
+    ultimo_nome   = serializers.SerializerMethodField()
+    email         = serializers.SerializerMethodField()
+
     class Meta:
         model = Funcionario
         fields = '__all__'
+
+    def get_primeiro_nome(self, obj):
+        try:
+            return obj.usuario.primeiro_nome
+        except:
+            return "Funcionário sem primeiro nome cadastrado."
+
+    def get_ultimo_nome(self, obj):
+        try:
+            return obj.usuario.ultimo_nome
+        except:
+            return "Funcionário sem último nome cadastrado."
+
+    def get_email(self, obj):
+        try:
+            return obj.usuario.email
+        except:
+            return "Funcionário sem email cadastrado."
 
 
 class EmpresaSerializer(serializers.ModelSerializer):
