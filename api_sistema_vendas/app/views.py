@@ -728,12 +728,12 @@ def venda_create(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
-@permission_required(['view_venda', 'change_venda', 'delete_venda'])
+@permission_required(['view_venda', 'delete_venda'])
 def venda_detail(request, pk):
     """
-    Retorna, atualiza ou deleta uma venda.
+    Retorna ou deleta uma venda.
     """
     try:
         empresa = get_user_empresa(request)
@@ -744,17 +744,6 @@ def venda_detail(request, pk):
     if request.method == 'GET':
         serializer = VendaSerializer(venda)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    elif request.method == 'PUT':
-        _mutable = request.POST._mutable
-        request.POST._mutable = True
-        request.data['empresa'] = empresa
-        request.POST._mutable = _mutable
-        serializer = VendaSerializer(venda, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         venda.delete()
@@ -803,12 +792,12 @@ def vendaitem_create(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'DELETE'])
 @permission_classes([IsAuthenticated])
-@permission_required(['view_vendaitem', 'change_vendaitem', 'delete_vendaitem'])
+@permission_required(['view_vendaitem', 'delete_vendaitem'])
 def vendaitem_detail(request, pk):
     """
-    Retorna, atualiza ou deleta um item de uma venda.
+    Retorna ou deleta um item de uma venda.
     """
     try:
         empresa = get_user_empresa(request)
@@ -819,17 +808,6 @@ def vendaitem_detail(request, pk):
     if request.method == 'GET':
         serializer = VendaItemSerializer(vendaitem)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    elif request.method == 'PUT':
-        _mutable = request.POST._mutable
-        request.POST._mutable = True
-        request.data['empresa'] = empresa
-        request.POST._mutable = _mutable
-        serializer = VendaItemSerializer(vendaitem, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         vendaitem.delete()
@@ -901,6 +879,19 @@ def cliente_detail(request, pk):
     elif request.method == 'DELETE':
         cliente.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_cliente'])
+def get_cliente_by_cpf(request, cpf):
+    try:
+        empresa = get_user_empresa(request)
+        cliente = Cliente.objects.get(cpf=cpf, empresa__id=empresa)
+        serializer = ClienteSerializer(cliente)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Cliente.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 # Views - CompraEstoque

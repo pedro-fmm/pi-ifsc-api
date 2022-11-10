@@ -2,7 +2,6 @@ from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from uuid import uuid4
-from django.contrib.auth.models import Permission
 from django.db.models import Max
 
 class UsuarioManager(BaseUserManager):
