@@ -55,7 +55,7 @@ class Usuario(PermissionsMixin, AbstractBaseUser):
     """
     Modelo de usuário personalizado com seus devidos campos
     """
-    username                = models.CharField('usuario', max_length=15, unique=True)
+    username                = models.CharField('usuario', max_length=15)
     primeiro_nome           = models.CharField('primeiro nome', max_length=30)
     ultimo_nome             = models.CharField('ultimo nome', max_length=30)
     email                   = models.EmailField('endereco e-mail', max_length=255, unique=True)
@@ -111,7 +111,7 @@ class Empresa(models.Model):
 class Funcionario(models.Model):
     usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
-    comissao                = models.DecimalField(max_digits=2, decimal_places=2, default=0.00)
+    comissao                = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
     class Meta:
         verbose_name = "funcionario"
