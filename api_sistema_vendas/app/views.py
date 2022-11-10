@@ -248,7 +248,7 @@ def funcionario_create(request):
         user = user_serializer.save()
         request_copy = request.data.copy()
         request_copy['empresa'] = empresa
-        request_copy['usuario'] = user
+        request_copy['usuario'] = user.pk
         func_serializer = FuncionarioSerializer(data=request_copy)
         if func_serializer.is_valid():
             func_serializer.save()    
