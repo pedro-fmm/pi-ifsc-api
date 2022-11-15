@@ -113,15 +113,24 @@ def permissao_list(request):
 # Views - Empresa
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def empresa_create(request):
     """
     Cria uma empresa.
     """
-    serializer = EmpresaSerializer(data=request.data)
+    _mutable = request.POST._mutable
+    request.POST._mutable = True
+    request.data['icone'] = request.FILES["icone"]
+    request.POST._mutable = _mutable
+    serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        user = serializer.save()
+        request_copy = request.data.copy()
+        request_copy['administrador'] = user.pk
+        empresa_serializer = EmpresaSerializer(data=request_copy)
+        if empresa_serializer.is_valid():   
+            empresa_serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(empresa_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
