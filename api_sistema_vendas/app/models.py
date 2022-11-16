@@ -301,8 +301,6 @@ def contador():
     if not numero:
         return 1
     else:
-        if numero['numero__max'] == None:
-            return 1
         return numero['numero__max'] + 1
 
 
