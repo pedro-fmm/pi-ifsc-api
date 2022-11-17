@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 from .local_settings import DJANGO_SECRET_KEY, MYSQL_CONN, SQLITE_CONN
+from .local_settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_FILE_OVERWRITE, AWS_S3_OBJECT_PARAMETERS, AWS_S3_CUSTOM_DOMAIN, AWS_DEFAULT_ACL, AWS_S3_ADDRESSING_STYLE
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,13 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-mws8w#9=8i)twc#hvw1*t1j2nc!p^#11#a=j8&ac64m%$3ll37'
+SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
 
 # Application definition
 
@@ -38,16 +44,59 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
-    'produtos',
-    'clientes'
+    'rest_framework.authtoken',
+    'app',
+    'allauth'
 ]
+
+# Authentication
+
+AUTH_USER_MODEL = 'app.Usuario'
+LOGIN_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+}
+
+if not DEBUG:
+    REST_FRAMEWORK = {
+        'DEFAULT_RENDERER_CLASSES': (
+            'rest_framework.renderers.JSONRenderer',
+        ),
+        'DEFAULT_PERMISSION_CLASSES': [
+            'rest_framework.permissions.IsAuthenticated',
+        ],
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ),
+    }
+    
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -77,9 +126,9 @@ WSGI_APPLICATION = 'api_sistema_vendas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-#DATABASES = MYSQL_CONN #connecting to cloud mysql
+DATABASES = MYSQL_CONN #connecting to cloud mysql
 
-DATABASES = SQLITE_CONN #connecting to local sqlite
+#DATABASES = SQLITE_CONN #connecting to local sqlite
 
 
 # Password validation
@@ -118,7 +167,45 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_URL = '/media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# AWS 
+
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+
+AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+
+AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+
+AWS_DEFAULT_ACL = AWS_DEFAULT_ACL
+
+AWS_S3_CUSTOM_DOMAIN = AWS_S3_CUSTOM_DOMAIN
+
+AWS_S3_OBJECT_PARAMETERS = AWS_S3_OBJECT_PARAMETERS
+
+AWS_S3_FILE_OVERWRITE = AWS_S3_FILE_OVERWRITE  
+
+AWS_DEFAULT_ACL = AWS_DEFAULT_ACL  
+
+AWS_S3_ADDRESSING_STYLE = AWS_S3_ADDRESSING_STYLE
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
