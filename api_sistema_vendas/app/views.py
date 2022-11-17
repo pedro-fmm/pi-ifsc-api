@@ -299,6 +299,22 @@ def funcionario_detail(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@permission_required(['view_funcionario'])
+def funcionario_logged(request):
+    """
+    Retorna, atualiza ou deleta um funcionário.
+    """
+    try:
+        empresa = get_user_empresa(request)
+        funcionario = Funcionario.objects.get(usuario=request.user.id, empresa__id=empresa)
+    except Funcionario.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = FuncionarioSerializer(funcionario)
+    return Response(serializer.data)
+
 # Views - Produto
 
 @api_view(['GET'])

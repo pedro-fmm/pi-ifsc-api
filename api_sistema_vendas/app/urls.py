@@ -2,7 +2,7 @@ from django.urls import path, re_path
 from .views import login, register, refresh, permissao_list, is_authenticated
 from .views import fornecedor_list, funcionario_list, preco_list, faixa_list, genero_list, produto_list, categoria_list, plataforma_list, venda_list, vendaitem_list, cliente_list
 from .views import empresa_create, fornecedor_create, funcionario_create, preco_create, faixa_create, genero_create, produto_create, categoria_create, plataforma_create, venda_create, vendaitem_create, cliente_create
-from .views import empresa_detail, fornecedor_detail, funcionario_detail, preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail, venda_detail, vendaitem_detail, cliente_detail, get_cliente_by_cpf
+from .views import empresa_detail, fornecedor_detail, funcionario_detail, preco_detail, faixa_detail, genero_detail, produto_detail, categoria_detail, plataforma_detail, venda_detail, vendaitem_detail, cliente_detail, get_cliente_by_cpf, funcionario_logged
 from .views import search
 from .views import relatorio_venda_mensal, relatorio_mais_vendidos, relatorio_comissao_mensal
 from .views import dados_cadastro_produto
@@ -43,6 +43,7 @@ urlpatterns = [
     path('empresa/<uuid:pk>', empresa_detail),
     path('fornecedor/<uuid:pk>', fornecedor_detail),
     path('funcionario/<uuid:pk>', funcionario_detail),
+    path('funcionario/', funcionario_logged),
     path('categoria/<uuid:pk>', categoria_detail),
     path('preco/<uuid:pk>', preco_detail),
     path('faixa/<uuid:pk>', faixa_detail),
