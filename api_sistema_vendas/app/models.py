@@ -109,7 +109,7 @@ class Empresa(models.Model):
 
 
 class Funcionario(models.Model):
-    usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')
+    usuario                 = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='funcionario')  
     empresa                 = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='empresa_funcionarios')
     comissao                = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 

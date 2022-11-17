@@ -785,7 +785,7 @@ def vendaitem_list(request):
     Lista os itens de uma venda.
     """
     empresa = get_user_empresa(request)
-    vendaitens = VendaItem.objects.filter(empresa__id=empresa)
+    vendaitens = VendaItem.objects.filter(venda__empresa__id=empresa)
     serializer = VendaItemSerializer(vendaitens, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
