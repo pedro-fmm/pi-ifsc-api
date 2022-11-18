@@ -17,7 +17,7 @@ jobs:
     - name: Tag and push image
       env:
         REGISTRY: ifscpi
-        REPOSITORY: pi
+        REPOSITORY: api
         IMAGE_TAG: prod-${{ github.run_number }}
         DOCKER_HUB_REPO: ${{ secrets.DOCKER_HUB_REPO }}
         DOCKER_HUB_PASS: ${{ secrets.DOCKER_HUB_PASS }}
