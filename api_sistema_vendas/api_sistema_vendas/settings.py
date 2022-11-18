@@ -123,7 +123,7 @@ WSGI_APPLICATION = 'api_sistema_vendas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-MYSQL_CONN = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': getenv('MYSQL_DATABASE'),
