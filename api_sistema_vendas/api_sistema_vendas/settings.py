@@ -12,28 +12,23 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
-from .local_settings import DJANGO_SECRET_KEY, MYSQL_CONN, SQLITE_CONN
-from .local_settings import AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_FILE_OVERWRITE, AWS_S3_OBJECT_PARAMETERS, AWS_S3_CUSTOM_DOMAIN, AWS_DEFAULT_ACL, AWS_S3_ADDRESSING_STYLE
+from os import getenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = DJANGO_SECRET_KEY
+SECRET_KEY = getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ['*']
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
-]
+CORS_ALLOWED_ORIGINS = ['https://*', 'http://*']
 
 # Application definition
 
@@ -126,10 +121,16 @@ WSGI_APPLICATION = 'api_sistema_vendas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = MYSQL_CONN #connecting to cloud mysql
-
-#DATABASES = SQLITE_CONN #connecting to local sqlite
-
+MYSQL_CONN = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': getenv('MYSQL_DATABASE'),
+        'USER': getenv('MYSQL_USER'),
+        'PASSWORD': getenv('MYSQL_PASSWORD'),
+        'HOST': getenv('MYSQL_HOST'),
+        'PORT': getenv('MYSQL_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -178,23 +179,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AWS 
 
-AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+AWS_ACCESS_KEY_ID = getenv('AWS_ACCESS_KEY_ID')
 
-AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = getenv('AWS_SECRET_ACCESS_KEY')
 
-AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+AWS_STORAGE_BUCKET_NAME = getenv('AWS_BUCKET')
 
-AWS_DEFAULT_ACL = AWS_DEFAULT_ACL
+AWS_DEFAULT_ACL = 'public-read'
 
-AWS_S3_CUSTOM_DOMAIN = AWS_S3_CUSTOM_DOMAIN
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-AWS_S3_OBJECT_PARAMETERS = AWS_S3_OBJECT_PARAMETERS
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
 
-AWS_S3_FILE_OVERWRITE = AWS_S3_FILE_OVERWRITE  
+AWS_S3_FILE_OVERWRITE = False  
 
-AWS_DEFAULT_ACL = AWS_DEFAULT_ACL  
+AWS_DEFAULT_ACL = None  
 
-AWS_S3_ADDRESSING_STYLE = AWS_S3_ADDRESSING_STYLE
+AWS_S3_ADDRESSING_STYLE = "virtual"
 
 LOGGING = {
     'version': 1,
