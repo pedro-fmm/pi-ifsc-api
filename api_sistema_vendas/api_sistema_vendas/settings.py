@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOWED_ORIGINS = ['https://*', 'http://*']
 
+CSRF_TRUSTED_ORIGINS = ['https://pi.nuvme.dev.br', 'https://pi-api.nuvme.dev.br']
+
 # Application definition
 
 INSTALLED_APPS = [
