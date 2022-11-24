@@ -123,7 +123,6 @@ WSGI_APPLICATION = 'api_sistema_vendas.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -134,12 +133,10 @@ DATABASES = {
         'PORT': getenv('MYSQL_PORT'),
     }
 }
-=======
+
 #DATABASES = MYSQL_CONN #connecting to cloud mysql
 
-DATABASES = SQLITE_CONN #connecting to local sqlite
-
->>>>>>> 22716906f49133989ca8d03599b19302eaece44b
+#DATABASES = SQLITE_CONN #connecting to local sqlite
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
