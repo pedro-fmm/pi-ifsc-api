@@ -25,6 +25,13 @@ class LoginSerializer(TokenObtainPairSerializer):
         data['refresh'] = str(refresh)
         data['access'] = str(refresh.access_token)
 
+        try:
+            self.user.funcionario.empresa.id
+        except:
+            data['isadmin'] = True
+        else:
+            data['isadmin'] = False
+
         if api_settings.UPDATE_LAST_LOGIN:
             update_last_login(None, self.user)
 
