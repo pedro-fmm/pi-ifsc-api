@@ -42,7 +42,7 @@ urlpatterns = [
     # Detail
     path('empresa/<uuid:pk>', empresa_detail),
     path('fornecedor/<uuid:pk>', fornecedor_detail),
-    path('funcionario/<uuid:pk>', funcionario_detail),
+    path('funcionario/<int:pk>', funcionario_detail),
     path('funcionario/', funcionario_logged),
     path('categoria/<uuid:pk>', categoria_detail),
     path('preco/<uuid:pk>', preco_detail),
