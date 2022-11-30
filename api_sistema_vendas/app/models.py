@@ -327,6 +327,7 @@ class VendaItem(models.Model):
     produto                 = models.ForeignKey(Produto, on_delete=models.CASCADE, related_name='vendaitens')
     venda                   = models.ForeignKey(Venda, on_delete=models.CASCADE, related_name='vendaitens')
     valor_produto           = models.ForeignKey(Preco, on_delete=models.DO_NOTHING, related_name="vendaitens")
+    quantidade              = models.IntegerField(default=1)
 
 
 class CompraEstoque(models.Model):
