@@ -99,7 +99,7 @@ python manage.py runserver
     <!-- Volpato -->
     <td align="center"><a href="https://github.com/PedroLuscao"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/89154708?" width="100px;" alt=""/><br /><sub><b>Pedro Lucas<br>Volpato da Rosa</b></sub></a><br /></td>
     <!-- Cauê -->
-    <td align="center"><a href=""><img style="border-radius: 50%;" src="https://github.com/Caue-Lourenzo-Batista" width="100px;" alt="Cauê"/><br /><sub><b>Cauê Lourenzo</b></sub></a><br /></td>
+    <td align="center"><a href="https://github.com/Caue-Lourenzo-Batista"><img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/102556908?v=4" width="100px;" alt="Cauê"/><br /><sub><b>Cauê Lourenzo</b></sub></a><br /></td>
   </tr>
 </table>
 
